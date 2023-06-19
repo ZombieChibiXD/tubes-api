@@ -12,13 +12,13 @@ use Illuminate\Foundation\Http\FormRequest;
  *       property="username",
  *       type="string",
  *       description="User's username",
- *       example="user123"
+ *       example="admin"
  *     ),
  *     @OA\Property(
  *         property="password",
  *         type="string",
  *         description="User's password",
- *         example="password123"
+ *         example="password"
  *     )
  * )
  */

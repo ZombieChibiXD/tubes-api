@@ -41,19 +41,55 @@
                                 "schema": {
                                     "properties": {
                                         "token": {
-                                            "description": "Access token for authentication",
-                                            "type": "string",
-                                            "example": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9"
-                                        },
-                                        "token_type": {
-                                            "description": "Type of token",
-                                            "type": "string",
-                                            "example": "Bearer"
-                                        },
-                                        "expires_in": {
-                                            "description": "Duration of token validity in seconds",
-                                            "type": "integer",
-                                            "example": 3600
+                                            "properties": {
+                                                "name": {
+                                                    "description": "Token name",
+                                                    "type": "string",
+                                                    "example": "authToken"
+                                                },
+                                                "abilities": {
+                                                    "description": "Token abilities",
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string",
+                                                        "example": "ADMINISTRATOR"
+                                                    }
+                                                },
+                                                "expires_at": {
+                                                    "description": "Token expiration date",
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2023-06-19T15:36:53.000000Z"
+                                                },
+                                                "tokenable_id": {
+                                                    "description": "Tokenable ID",
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "tokenable_type": {
+                                                    "description": "Tokenable type",
+                                                    "type": "string",
+                                                    "example": "App\\\\Models\\\\User"
+                                                },
+                                                "updated_at": {
+                                                    "description": "Updated at date",
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2023-06-19T14:36:53.000000Z"
+                                                },
+                                                "created_at": {
+                                                    "description": "Created at date",
+                                                    "type": "string",
+                                                    "format": "date-time",
+                                                    "example": "2023-06-19T14:36:53.000000Z"
+                                                },
+                                                "id": {
+                                                    "description": "Token ID",
+                                                    "type": "integer",
+                                                    "example": 2
+                                                }
+                                            },
+                                            "type": "object"
                                         },
                                         "user": {
                                             "$ref": "#/components/schemas/User"
@@ -64,19 +100,22 @@
                             }
                         }
                     },
-                    "401": {
+                    "403": {
                         "description": "Unauthorized",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "properties": {
-                                        "message": {
-                                            "description": "Error message",
-                                            "type": "string",
-                                            "example": "Invalid credentials"
-                                        }
-                                    },
-                                    "type": "object"
+                                    "$ref": "#/components/schemas/WrongCredentialException"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UnprocessableContentException"
                                 }
                             }
                         }
@@ -122,6 +161,27 @@
     },
     "components": {
         "schemas": {
+            "UnprocessableContentException": {
+                "properties": {
+                    "message": {
+                        "description": "Error message",
+                        "type": "string",
+                        "example": "Wrong username or password"
+                    },
+                    "errors": {
+                        "description": "Validation errors",
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "example": "The name field is required."
+                            }
+                        }
+                    }
+                },
+                "type": "object"
+            },
             "WrongCredentialException": {
                 "properties": {
                     "message": {
@@ -141,12 +201,12 @@
                     "username": {
                         "description": "User's username",
                         "type": "string",
-                        "example": "user123"
+                        "example": "admin"
                     },
                     "password": {
                         "description": "User's password",
                         "type": "string",
-                        "example": "password123"
+                        "example": "password"
                     }
                 },
                 "type": "object"

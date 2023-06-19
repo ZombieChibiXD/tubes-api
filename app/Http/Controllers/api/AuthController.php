@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\api;
 
+use App\Exceptions\api\WrongCredentialException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AuthLoginRequest;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 /**
  * @OA\Tag(
@@ -43,21 +44,61 @@ class AuthController extends Controller
      *             @OA\Schema(
      *                 @OA\Property(
      *                     property="token",
-     *                     type="string",
-     *                     description="Access token for authentication",
-     *                     example="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9"
-     *                 ),
-     *                 @OA\Property(
-     *                     property="token_type",
-     *                     type="string",
-     *                     description="Type of token",
-     *                     example="Bearer"
-     *                 ),
-     *                 @OA\Property(
-     *                     property="expires_in",
-     *                     type="integer",
-     *                     description="Duration of token validity in seconds",
-     *                     example=3600
+     *                     type="object",
+     *                     @OA\Property(
+     *                         property="name",
+     *                         type="string",
+     *                         description="Token name",
+     *                         example="authToken"
+     *                     ),
+     *                     @OA\Property(
+     *                         property="abilities",
+     *                         type="array",
+     *                         description="Token abilities",
+     *                         @OA\Items(
+     *                             type="string",
+     *                             example="ADMINISTRATOR"
+     *                         )
+     *                     ),
+     *                     @OA\Property(
+     *                         property="expires_at",
+     *                         type="string",
+     *                         format="date-time",
+     *                         description="Token expiration date",
+     *                         example="2023-06-19T15:36:53.000000Z"
+     *                     ),
+     *                     @OA\Property(
+     *                         property="tokenable_id",
+     *                         type="integer",
+     *                         description="Tokenable ID",
+     *                         example=1
+     *                     ),
+     *                     @OA\Property(
+     *                         property="tokenable_type",
+     *                         type="string",
+     *                         description="Tokenable type",
+     *                         example="App\\Models\\User"
+     *                     ),
+     *                     @OA\Property(
+     *                         property="updated_at",
+     *                         type="string",
+     *                         format="date-time",
+     *                         description="Updated at date",
+     *                         example="2023-06-19T14:36:53.000000Z"
+     *                     ),
+     *                     @OA\Property(
+     *                         property="created_at",
+     *                         type="string",
+     *                         format="date-time",
+     *                         description="Created at date",
+     *                         example="2023-06-19T14:36:53.000000Z"
+     *                     ),
+     *                     @OA\Property(
+     *                         property="id",
+     *                         type="integer",
+     *                         description="Token ID",
+     *                         example=2
+     *                     )
      *                 ),
      *                 @OA\Property(
      *                     property="user",
@@ -67,26 +108,40 @@ class AuthController extends Controller
      *         )
      *     ),
      *     @OA\Response(
-     *         response=401,
-     *         description="Unauthorized",
-     *         @OA\MediaType(
-     *             mediaType="application/json",
-     *             @OA\Schema(
-     *                 @OA\Property(
-     *                     property="message",
-     *                     type="string",
-     *                     description="Error message",
-     *                     example="Invalid credentials"
-     *                 )
-     *             )
-     *         )
+     *       response=403,
+     *       description="Unauthorized",
+     *       @OA\MediaType(
+     *         mediaType="application/json",
+     *         @OA\Schema(ref="#/components/schemas/WrongCredentialException")
+     *       )
+     *     ),
+     *     @OA\Response(
+     *       response=422,
+     *       description="Unprocessable Entity",
+     *       @OA\MediaType(
+     *         mediaType="application/json",
+     *         @OA\Schema(ref="#/components/schemas/UnprocessableContentException")
+     *       )
      *     )
-     * )
+     *  )
      */
     public function login(AuthLoginRequest $request)
     {
+        $credentials = $request->only('username', 'password');
+        if (Auth::attempt($credentials) === false) {
+            throw new WrongCredentialException();
+        }
+        
+        /**
+         * @var \App\Models\User $user
+         */
+        $user = Auth::user();
+        $expiresIn = 3600;
+        $expiresAt = now()->addSeconds($expiresIn);
+        $token = $user->createToken('authToken', $user->getRoleNames(), $expiresAt);
         return response()->json([
-            'message'=>'Login successful'
+            'token' => $token,
+            'user' => $user
         ], 200);
     }
 
@@ -102,6 +157,8 @@ class AuthController extends Controller
      */
     public function logout()
     {
-        //
+        return response()->json([
+            'message'=>'Logout successful'
+        ], 200);
     }
 }
