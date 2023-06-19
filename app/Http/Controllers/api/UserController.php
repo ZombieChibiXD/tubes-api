@@ -7,10 +7,30 @@ use App\Http\Requests\UserCreateRequest;
 use App\Http\Requests\UserUpdateRequest;
 use Illuminate\Http\Request;
 
+
+/**
+ * @OA\Info(
+ *     title="Your API Title",
+ *     version="1.0.0",
+ *     description="Description of your API"
+ * )
+ */
 class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
+     * 
+     * @OA\Get(
+     *    path="/api/users",
+     *   tags={"Users"},
+     *  summary="List Users",
+     * operationId="listUsers",
+     * @OA\Response(
+     *   response=200,
+     *  description="A list with users"
+     * )
+     * )
+     * 
      */
     public function index()
     {
