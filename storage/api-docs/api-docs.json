@@ -1,8 +1,7 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "Your API Title",
-        "description": "Description of your API",
+        "title": "API untuk Tubes Pemrograman",
         "version": "1.0.0"
     },
     "paths": {
@@ -19,6 +18,18 @@
                         "description": "A list with users"
                     }
                 }
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "description": "Masukkan token JWT",
+                "name": "bearerAuth",
+                "in": "header",
+                "bearerFormat": "JWT",
+                "scheme": "bearer"
             }
         }
     }
