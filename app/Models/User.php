@@ -97,7 +97,7 @@ class User extends Authenticatable
      */
     public function roles()
     {
-        return $this->belongsToMany(Role::class, UserRole::$table);
+        return $this->belongsToMany(Role::class, UserRole::TABLE);
     }
 
     /**
@@ -107,4 +107,85 @@ class User extends Authenticatable
     {
         return $this->roles()->where('name', $role)->exists();
     }
+
+    /**
+     * Get role names of the user.
+     */
+    public function getRoleNames()
+    {
+        return $this->roles()->pluck('name')->toArray();
+    }
 }
+
+/**
+ * @OA\Schema(
+ *     schema="NewAccessToken",
+ *     title="New Access Token",
+ *     description="Schema for a new access token response",
+ *     @OA\Property(
+ *         property="accessToken",
+ *         type="object",
+ *         description="Access token details",
+ *         @OA\Property(
+ *             property="name",
+ *             type="string",
+ *             description="Token name",
+ *             example="authToken"
+ *         ),
+ *         @OA\Property(
+ *             property="abilities",
+ *             type="array",
+ *             description="Token abilities",
+ *             @OA\Items(
+ *                 type="string",
+ *                 example="ADMINISTRATOR"
+ *             )
+ *         ),
+ *         @OA\Property(
+ *             property="expires_at",
+ *             type="string",
+ *             format="date-time",
+ *             description="Token expiration date",
+ *             example="2023-06-19T15:36:53.000000Z"
+ *         ),
+ *         @OA\Property(
+ *             property="tokenable_id",
+ *             type="integer",
+ *             description="Tokenable ID",
+ *             example=1
+ *         ),
+ *         @OA\Property(
+ *             property="tokenable_type",
+ *             type="string",
+ *             description="Tokenable type",
+ *             example="App\\Models\\User"
+ *         ),
+ *         @OA\Property(
+ *             property="updated_at",
+ *             type="string",
+ *             format="date-time",
+ *             description="Updated at date",
+ *             example="2023-06-19T14:36:53.000000Z"
+ *         ),
+ *         @OA\Property(
+ *             property="created_at",
+ *             type="string",
+ *             format="date-time",
+ *             description="Created at date",
+ *             example="2023-06-19T14:36:53.000000Z"
+ *         ),
+ *         @OA\Property(
+ *             property="id",
+ *             type="integer",
+ *             description="Token ID",
+ *             example=2
+ *         )
+ *     ),
+ *     @OA\Property(
+ *         property="plainTextToken",
+ *         type="string",
+ *         description="Plain text token",
+ *         example="2|QXOTSMko3kTiuZfd5YHxoBh3wwO5ywvER7ZThyWu"
+ *     )
+ * )
+ */
