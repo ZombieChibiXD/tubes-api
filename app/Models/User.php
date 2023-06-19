@@ -53,71 +53,7 @@ use Laravel\Sanctum\HasApiTokens;
  *         description="Timestamp of last user update",
  *         example="2020-01-01 00:00:00"
  *     )
- * )
- */
-class User extends Authenticatable
-{
-    use HasApiTokens, HasFactory, Notifiable;
-
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
-    protected $fillable = [
-        'name',
-        'email',
-        'username',
-        'password',
-    ];
-
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
-    protected $hidden = [
-        'password',
-        'remember_token',
-    ];
-
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-        'password' => 'hashed',
-    ];
-
-
-    /**
-     * Get the roles that belong to the user.
-     */
-    public function roles()
-    {
-        return $this->belongsToMany(Role::class, UserRole::TABLE);
-    }
-
-    /**
-     * Find out if user has a specific role.
-     */
-    public function hasRole(string $role)
-    {
-        return $this->roles()->where('name', $role)->exists();
-    }
-
-    /**
-     * Get role names of the user.
-     */
-    public function getRoleNames()
-    {
-        return $this->roles()->pluck('name')->toArray();
-    }
-}
-
-/**
+ * ),
  * @OA\Schema(
  *     schema="NewAccessToken",
  *     title="New Access Token",
@@ -189,3 +125,64 @@ class User extends Authenticatable
  *     )
  * )
  */
+class User extends Authenticatable
+{
+    use HasApiTokens, HasFactory, Notifiable;
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+        'name',
+        'email',
+        'username',
+        'password',
+    ];
+
+    /**
+     * The attributes that should be hidden for serialization.
+     *
+     * @var array<int, string>
+     */
+    protected $hidden = [
+        'password',
+        'remember_token',
+    ];
+
+    /**
+     * The attributes that should be cast.
+     *
+     * @var array<string, string>
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+    ];
+
+
+    /**
+     * Get the roles that belong to the user.
+     */
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class, UserRole::TABLE);
+    }
+
+    /**
+     * Find out if user has a specific role.
+     */
+    public function hasRole(string $role)
+    {
+        return $this->roles()->where('name', $role)->exists();
+    }
+
+    /**
+     * Get role names of the user.
+     */
+    public function getRoleNames()
+    {
+        return $this->roles()->pluck('name')->toArray();
+    }
+}

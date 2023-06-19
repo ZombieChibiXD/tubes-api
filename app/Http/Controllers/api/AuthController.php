@@ -5,6 +5,7 @@ namespace App\Http\Controllers\api;
 use App\Exceptions\api\WrongCredentialException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\AuthLoginRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 /**
@@ -42,74 +43,14 @@ class AuthController extends Controller
      *         @OA\MediaType(
      *             mediaType="application/json",
      *             @OA\Schema(
-     *                 @OA\Property(
-     *                     property="token",
-     *                     type="object",
-     *                     @OA\Property(
-     *                         property="name",
-     *                         type="string",
-     *                         description="Token name",
-     *                         example="authToken"
-     *                     ),
-     *                     @OA\Property(
-     *                         property="abilities",
-     *                         type="array",
-     *                         description="Token abilities",
-     *                         @OA\Items(
-     *                             type="string",
-     *                             example="ADMINISTRATOR"
-     *                         )
-     *                     ),
-     *                     @OA\Property(
-     *                         property="expires_at",
-     *                         type="string",
-     *                         format="date-time",
-     *                         description="Token expiration date",
-     *                         example="2023-06-19T15:36:53.000000Z"
-     *                     ),
-     *                     @OA\Property(
-     *                         property="tokenable_id",
-     *                         type="integer",
-     *                         description="Tokenable ID",
-     *                         example=1
-     *                     ),
-     *                     @OA\Property(
-     *                         property="tokenable_type",
-     *                         type="string",
-     *                         description="Tokenable type",
-     *                         example="App\\Models\\User"
-     *                     ),
-     *                     @OA\Property(
-     *                         property="updated_at",
-     *                         type="string",
-     *                         format="date-time",
-     *                         description="Updated at date",
-     *                         example="2023-06-19T14:36:53.000000Z"
-     *                     ),
-     *                     @OA\Property(
-     *                         property="created_at",
-     *                         type="string",
-     *                         format="date-time",
-     *                         description="Created at date",
-     *                         example="2023-06-19T14:36:53.000000Z"
-     *                     ),
-     *                     @OA\Property(
-     *                         property="id",
-     *                         type="integer",
-     *                         description="Token ID",
-     *                         example=2
-     *                     )
-     *                 ),
-     *                 @OA\Property(
-     *                     property="user",
-     *                     ref="#/components/schemas/User"
-     *                 )
+     *                 @OA\Property(property="token", ref="#/components/schemas/NewAccessToken"),
+     *                 @OA\Property(property="user", ref="#/components/schemas/User")
      *             )
      *         )
      *     ),
      *     @OA\Response(
      *       response=403,
-     *       description="Unauthorized",
+     *       description="Wrong credentials",
      *       @OA\MediaType(
      *         mediaType="application/json",
      *         @OA\Schema(ref="#/components/schemas/WrongCredentialException")
@@ -146,19 +87,32 @@ class AuthController extends Controller
     }
 
     /**
-     * @OA\Get(
+     * @OA\Post(
      *   tags={"Auth"},
-     *   path="/api/auth",
+     *   path="/api/auth/logout",
      *   summary="Summary",
-     *   @OA\Response(response=200, description="OK"),
-     *   @OA\Response(response=401, description="Unauthorized"),
-     *   @OA\Response(response=404, description="Not Found")
+     *   security={{"bearerAuth":{}}},
+     *   @OA\Response(
+     *     response=200,
+     *     description="OK",
+     *     @OA\MediaType(
+     *       mediaType="application/json",
+     *       @OA\Schema(ref="#/components/schemas/User")
+     *     ),
+     *     @OA\MediaType(
+     *       mediaType="*\*",
+     *       @OA\Schema(ref="#/components/schemas/User")
+     *     ),
+     *   ),
+     *   @OA\Response(response=401, description="Unauthenticated")
      * )
      */
-    public function logout()
+    public function logout(Request $request)
     {
-        return response()->json([
-            'message'=>'Logout successful'
-        ], 200);
+        // Get the current authenticated token
+        $user = $request->user();
+        // Revoke the token
+        $request->user()->currentAccessToken()->delete();
+        return response()->json($user);
     }
 }

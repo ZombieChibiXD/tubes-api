@@ -22,7 +22,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // Add AuthController routes
 Route::post('/auth/login', [AuthController::class, 'login']);
-
+Route::post('/auth/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 // Add Sample route to test api
 Route::get('/sample', function () {
     return response()->json([

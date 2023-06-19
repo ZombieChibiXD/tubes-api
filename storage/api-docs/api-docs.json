@@ -41,55 +41,7 @@
                                 "schema": {
                                     "properties": {
                                         "token": {
-                                            "properties": {
-                                                "name": {
-                                                    "description": "Token name",
-                                                    "type": "string",
-                                                    "example": "authToken"
-                                                },
-                                                "abilities": {
-                                                    "description": "Token abilities",
-                                                    "type": "array",
-                                                    "items": {
-                                                        "type": "string",
-                                                        "example": "ADMINISTRATOR"
-                                                    }
-                                                },
-                                                "expires_at": {
-                                                    "description": "Token expiration date",
-                                                    "type": "string",
-                                                    "format": "date-time",
-                                                    "example": "2023-06-19T15:36:53.000000Z"
-                                                },
-                                                "tokenable_id": {
-                                                    "description": "Tokenable ID",
-                                                    "type": "integer",
-                                                    "example": 1
-                                                },
-                                                "tokenable_type": {
-                                                    "description": "Tokenable type",
-                                                    "type": "string",
-                                                    "example": "App\\\\Models\\\\User"
-                                                },
-                                                "updated_at": {
-                                                    "description": "Updated at date",
-                                                    "type": "string",
-                                                    "format": "date-time",
-                                                    "example": "2023-06-19T14:36:53.000000Z"
-                                                },
-                                                "created_at": {
-                                                    "description": "Created at date",
-                                                    "type": "string",
-                                                    "format": "date-time",
-                                                    "example": "2023-06-19T14:36:53.000000Z"
-                                                },
-                                                "id": {
-                                                    "description": "Token ID",
-                                                    "type": "integer",
-                                                    "example": 2
-                                                }
-                                            },
-                                            "type": "object"
+                                            "$ref": "#/components/schemas/NewAccessToken"
                                         },
                                         "user": {
                                             "$ref": "#/components/schemas/User"
@@ -101,7 +53,7 @@
                         }
                     },
                     "403": {
-                        "description": "Unauthorized",
+                        "description": "Wrong credentials",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -123,24 +75,38 @@
                 }
             }
         },
-        "/api/auth": {
-            "get": {
+        "/api/auth/logout": {
+            "post": {
                 "tags": [
                     "Auth"
                 ],
                 "summary": "Summary",
-                "operationId": "cfc4b59003d22492e062884b45b3aecf",
+                "operationId": "392b7d1309524bd8a5cb5272d91f6a5e",
                 "responses": {
                     "200": {
-                        "description": "OK"
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            },
+                            "*\\*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
                     },
                     "401": {
-                        "description": "Unauthorized"
-                    },
-                    "404": {
-                        "description": "Not Found"
+                        "description": "Unauthenticated"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/users": {
@@ -161,6 +127,16 @@
     },
     "components": {
         "schemas": {
+            "UnauthenticatedException": {
+                "properties": {
+                    "message": {
+                        "description": "Error message",
+                        "type": "string",
+                        "example": "Unauthenticated."
+                    }
+                },
+                "type": "object"
+            },
             "UnprocessableContentException": {
                 "properties": {
                     "message": {
@@ -257,15 +233,79 @@
                     }
                 },
                 "type": "object"
+            },
+            "NewAccessToken": {
+                "title": "New Access Token",
+                "description": "Schema for a new access token response",
+                "properties": {
+                    "accessToken": {
+                        "description": "Access token details",
+                        "properties": {
+                            "name": {
+                                "description": "Token name",
+                                "type": "string",
+                                "example": "authToken"
+                            },
+                            "abilities": {
+                                "description": "Token abilities",
+                                "type": "array",
+                                "items": {
+                                    "type": "string",
+                                    "example": "ADMINISTRATOR"
+                                }
+                            },
+                            "expires_at": {
+                                "description": "Token expiration date",
+                                "type": "string",
+                                "format": "date-time",
+                                "example": "2023-06-19T15:36:53.000000Z"
+                            },
+                            "tokenable_id": {
+                                "description": "Tokenable ID",
+                                "type": "integer",
+                                "example": 1
+                            },
+                            "tokenable_type": {
+                                "description": "Tokenable type",
+                                "type": "string",
+                                "example": "App\\\\Models\\\\User"
+                            },
+                            "updated_at": {
+                                "description": "Updated at date",
+                                "type": "string",
+                                "format": "date-time",
+                                "example": "2023-06-19T14:36:53.000000Z"
+                            },
+                            "created_at": {
+                                "description": "Created at date",
+                                "type": "string",
+                                "format": "date-time",
+                                "example": "2023-06-19T14:36:53.000000Z"
+                            },
+                            "id": {
+                                "description": "Token ID",
+                                "type": "integer",
+                                "example": 2
+                            }
+                        },
+                        "type": "object"
+                    },
+                    "plainTextToken": {
+                        "description": "Plain text token",
+                        "type": "string",
+                        "example": "2|QXOTSMko3kTiuZfd5YHxoBh3wwO5ywvER7ZThyWu"
+                    }
+                },
+                "type": "object"
             }
         },
         "securitySchemes": {
             "bearerAuth": {
                 "type": "http",
-                "description": "Masukkan token JWT",
-                "name": "bearerAuth",
+                "description": "Masukkan token",
+                "name": "Authorization",
                 "in": "header",
-                "bearerFormat": "JWT",
+                "bearerFormat": "Bearer {token}",
                 "scheme": "bearer"
             }
         }

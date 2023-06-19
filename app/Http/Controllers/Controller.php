@@ -16,10 +16,10 @@ use Illuminate\Routing\Controller as BaseController;
  *      type="http",
  *      scheme="bearer",
  *      in="header",
- *      name="bearerAuth",
- *      bearerFormat="JWT",
- *      description="Masukkan token JWT"
- *  )
+ *      name="Authorization",
+ *      bearerFormat="Bearer {token}",
+ *      description="Masukkan token"
+ *  ),
  */
 class Controller extends BaseController
 {
