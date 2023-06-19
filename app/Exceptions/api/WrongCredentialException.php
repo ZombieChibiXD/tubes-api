@@ -14,6 +14,12 @@ use Illuminate\Http\Request;
  *         type="string",
  *         description="Error message",
  *         example="Wrong username or password"
+ *     ),
+ *     @OA\Property(
+ *       property="error_code",
+ *       type="integer",
+ *       description="Error code",
+ *       example=403001
  *     )
  * )
  */
@@ -23,6 +29,7 @@ class WrongCredentialException extends Exception implements Responsable
     {
         return response()->json([
             'message' => 'Wrong username or password',
+            'error_code' => 403001,
         ], 403);
     }
 }

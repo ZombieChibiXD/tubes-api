@@ -31,6 +31,23 @@ class Handler extends ExceptionHandler
     }
 
 
+    /**
+     * @OA\Schema(
+     *     schema="UnauthenticatedException",
+     *     @OA\Property(
+     *         property="message",
+     *         type="string",
+     *         description="Error message",
+     *         example="Unauthenticated."
+     *     ),
+     *     @OA\Property(
+     *       property="error_code",
+     *       type="integer",
+     *       description="Error code",
+     *       example=401001
+     *     )
+     * )
+     */
     protected function unauthenticated($request, AuthenticationException $exception)
     {
         Log::error('Unauthenticated');
@@ -38,6 +55,7 @@ class Handler extends ExceptionHandler
         return $this->shouldReturnJson($request, $exception)
                     ? response()->json([
                         'message' => $exception->getMessage(),
+                        'error_code' => 401001,
                     ], 401)
                     : redirect()->guest($exception->redirectTo() ?? route('login'));
         
