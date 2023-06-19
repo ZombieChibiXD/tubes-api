@@ -6,14 +6,13 @@ use Illuminate\Foundation\Http\FormRequest;
 
 /**
  * @OA\Schema(
- *     schema="UserLoginRequest",
- *     required={"email", "password"},
+ *     schema="AuthLoginRequest",
+ *     required={"username", "password"},
  *     @OA\Property(
- *         property="email",
- *         type="string",
- *         format="email",
- *         description="User's email address",
- *         example="email@example.com"
+ *       property="username",
+ *       type="string",
+ *       description="User's username",
+ *       example="user123"
  *     ),
  *     @OA\Property(
  *         property="password",
@@ -30,7 +29,7 @@ class AuthLoginRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -41,7 +40,8 @@ class AuthLoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'username' => 'string|required|exists:users,username',
+            'password' => 'string|required',
         ];
     }
 }

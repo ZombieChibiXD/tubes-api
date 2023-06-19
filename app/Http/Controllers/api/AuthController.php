@@ -24,9 +24,15 @@ class AuthController extends Controller
      *         required=true,
      *         @OA\MediaType(
      *             mediaType="application/json",
-     *             @OA\Schema(
-     *                 ref="#/components/schemas/UserLoginRequest"
-     *             )
+     *             @OA\Schema(ref="#/components/schemas/AuthLoginRequest")
+     *         ),
+     *         @OA\MediaType(
+     *           mediaType="application/x-www-form-urlencoded",
+     *           @OA\Schema(ref="#/components/schemas/AuthLoginRequest")
+     *         ),
+     *         @OA\MediaType(
+     *           mediaType="multipart/form-data",
+     *           @OA\Schema(ref="#/components/schemas/AuthLoginRequest")
      *         )
      *     ),
      *     @OA\Response(
@@ -79,30 +85,19 @@ class AuthController extends Controller
      */
     public function login(AuthLoginRequest $request)
     {
-        //
+        return response()->json([
+            'message'=>'Login successful'
+        ], 200);
     }
 
     /**
-     * @OA\Post(
-     *     path="/api/auth/logout",
-     *     summary="User logout",
-     *     description="Logs out the authenticated user",
-     *     tags={"Auth"},
-     *     @OA\Response(
-     *         response=200,
-     *         description="Successful logout",
-     *         @OA\MediaType(
-     *             mediaType="application/json",
-     *             @OA\Schema(
-     *                 @OA\Property(
-     *                     property="message",
-     *                     type="string",
-     *                     description="Success message",
-     *                     example="Logout successful"
-     *                 )
-     *             )
-     *         )
-     *     )
+     * @OA\Get(
+     *   tags={"Auth"},
+     *   path="/api/auth",
+     *   summary="Summary",
+     *   @OA\Response(response=200, description="OK"),
+     *   @OA\Response(response=401, description="Unauthorized"),
+     *   @OA\Response(response=404, description="Not Found")
      * )
      */
     public function logout()
