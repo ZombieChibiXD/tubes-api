@@ -90,4 +90,21 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+
+    /**
+     * Get the roles that belong to the user.
+     */
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class);
+    }
+
+    /**
+     * Find out if user has a specific role.
+     */
+    public function hasRole(string $role)
+    {
+        return $this->roles()->where('name', $role)->exists();
+    }
 }
