@@ -13,17 +13,4 @@ class UserRole extends Pivot
         'user_id',
         'role_id',
     ];
-    protected $hidden = [
-        'created_at',
-        'updated_at',
-    ];
-    protected $casts = [
-        'user_id' => 'integer',
-        'role_id' => 'integer',
-    ];
-    protected $dates = [
-        'created_at',
-        'updated_at',
-    ];
-    protected $dateFormat = 'Y-m-d H:i:s';
 }
