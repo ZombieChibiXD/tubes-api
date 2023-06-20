@@ -109,6 +109,229 @@
                 ]
             }
         },
+        "/api/tool-materials": {
+            "get": {
+                "tags": [
+                    "ToolMaterial"
+                ],
+                "summary": "List tool materials",
+                "description": "Display a listing of the resource.",
+                "operationId": "5d0f10df4208bde8d033d84eb36779cf",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ToolMaterial"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "ToolMaterial"
+                ],
+                "summary": "Create tool material",
+                "description": "Store a newly created resource in storage.",
+                "operationId": "6d462f01e1a46121d6966069a39b0919",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreToolMaterialRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreToolMaterialRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreToolMaterialRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ToolMaterial"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UnprocessableContentException"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/tool-materials/{toolMaterial}": {
+            "get": {
+                "tags": [
+                    "ToolMaterial"
+                ],
+                "summary": "Show tool material",
+                "description": "Display the specified resource.",
+                "operationId": "5031309458fd470cd5f10181f44e6af4",
+                "parameters": [
+                    {
+                        "name": "toolMaterial",
+                        "in": "path",
+                        "description": "The tool material id",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/components/schemas/ToolMaterial/properties/id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ToolMaterial"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ModelNotFoundException"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "ToolMaterial"
+                ],
+                "summary": "Update tool material",
+                "description": "Update the specified resource in storage.",
+                "operationId": "6f9e0d345d46b07d7f32dcc7e69420d1",
+                "parameters": [
+                    {
+                        "name": "toolMaterial",
+                        "in": "path",
+                        "description": "The tool material id",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/components/schemas/ToolMaterial/properties/id"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateToolMaterialRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateToolMaterialRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/UpdateToolMaterialRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ToolMaterial"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UnprocessableContentException"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ModelNotFoundException"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "ToolMaterial"
+                ],
+                "summary": "Delete tool material",
+                "description": "Remove the specified resource from storage.",
+                "operationId": "1b11535ec4259b3b986e9e1503f46817",
+                "parameters": [
+                    {
+                        "name": "toolMaterial",
+                        "in": "path",
+                        "description": "The tool material id",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/components/schemas/ToolMaterial/properties/id"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "No Content"
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ModelNotFoundException"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/users": {
             "get": {
                 "tags": [
@@ -133,6 +356,32 @@
                         "description": "Error message",
                         "type": "string",
                         "example": "Unauthenticated."
+                    },
+                    "error_code": {
+                        "description": "Error code",
+                        "type": "integer",
+                        "example": 401001
+                    }
+                },
+                "type": "object"
+            },
+            "ModelNotFoundException": {
+                "properties": {
+                    "message": {
+                        "description": "Error message",
+                        "type": "string",
+                        "example": "No query results for model [App\\Models\\ToolMaterial] 1"
+                    },
+                    "errors": {
+                        "description": "Validation errors",
+                        "type": "object",
+                        "additionalProperties": {
+                            "type": "array",
+                            "items": {
+                                "type": "string",
+                                "example": "The name field is required."
+                            }
+                        }
                     }
                 },
                 "type": "object"
@@ -164,6 +413,11 @@
                         "description": "Error message",
                         "type": "string",
                         "example": "Wrong username or password"
+                    },
+                    "error_code": {
+                        "description": "Error code",
+                        "type": "integer",
+                        "example": 403001
                     }
                 },
                 "type": "object"
@@ -183,6 +437,77 @@
                         "description": "User's password",
                         "type": "string",
                         "example": "password"
+                    }
+                },
+                "type": "object"
+            },
+            "StoreToolMaterialRequest": {
+                "required": [
+                    "name"
+                ],
+                "properties": {
+                    "name": {
+                        "description": "Name of the tool material",
+                        "type": "string",
+                        "example": "Karbida"
+                    },
+                    "description": {
+                        "description": "Description of the tool material",
+                        "type": "string",
+                        "example": "Karbida is a material used for tools"
+                    }
+                },
+                "type": "object"
+            },
+            "UpdateToolMaterialRequest": {
+                "required": [
+                    "name"
+                ],
+                "properties": {
+                    "name": {
+                        "description": "Name of the tool material",
+                        "type": "string",
+                        "example": "Karbida"
+                    },
+                    "description": {
+                        "description": "Description of the tool material",
+                        "type": "string",
+                        "example": "Karbida is a material used for tools"
+                    }
+                },
+                "type": "object"
+            },
+            "ToolMaterial": {
+                "required": [
+                    "name"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "Tool material ID",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "description": "Tool material name",
+                        "type": "string",
+                        "example": "John Doe"
+                    },
+                    "description": {
+                        "description": "Description of the tool material",
+                        "type": "string",
+                        "example": "Karbida is a material used for tools"
+                    },
+                    "created_at": {
+                        "description": "Timestamp of creation",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2020-01-01 00:00:00"
+                    },
+                    "updated_at": {
+                        "description": "Timestamp of last update",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2020-01-01 00:00:00"
                     }
                 },
                 "type": "object"
@@ -314,6 +639,10 @@
         {
             "name": "Auth",
             "description": "Endpoints for user authentication"
+        },
+        {
+            "name": "ToolMaterial",
+            "description": "Endpoints for tool materials"
         }
     ]
 }
