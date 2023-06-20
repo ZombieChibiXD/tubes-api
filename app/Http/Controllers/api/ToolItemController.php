@@ -50,13 +50,70 @@ class ToolItemController extends Controller
 
     /**
      * Store a newly created resource in storage.
+     * @OA\Post(
+     *   tags={"ToolItem"},
+     *   path="/api/tool-products/{toolProduct}/tool-items",
+     *   summary="Create tool items",
+     *   security={{"bearerAuth":{}}},
+     *   @OA\Parameter(
+     *     name="toolProduct",
+     *     description="The tool product id",
+     *     required=true,
+     *     in="path",
+     *     @OA\Schema(type="integer")
+     *   ),
+     *   @OA\RequestBody(
+     *     description="The tool item request body",
+     *     required=true,
+     *     @OA\MediaType(
+     *       mediaType="application/json",
+     *       @OA\Schema(
+     *         type="object",
+     *         required={"amount"},
+     *         @OA\Property(
+     *           property="amount",
+     *           description="The amount of tool items to be created",
+     *           type="integer",
+     *           example=5
+     *         )
+     *       )
+     *     )
+     *   ),
+     *   @OA\Response(
+     *     response=201,
+     *     description="Created",
+     *     @OA\MediaType(
+     *       mediaType="application/json",
+     *       @OA\Schema(
+     *         type="array",
+     *         @OA\Items(ref="#/components/schemas/ToolItem")
+     *       )
+     *     )
+     *   )
+     * )
      */
     public function store(ToolProduct $toolProduct, StoreToolItemRequest $request)
     {
         // Get the amount of tool items to be created
         $amount = $request->input('amount');
 
-        // TODO: Create the tool items
+        /**
+         * @var ToolItem[] $newToolItems
+         */
+        $newToolItems = [];
+        for ($i = 0; $i < $amount; $i++) {
+            // Create a new tool item
+            $toolItem = new ToolItem([
+                'tool_product_id' => $toolProduct->id
+            ]);
+            $toolItem->save();
+            
+            // Add the tool item to the array
+            $newToolItems[] = $toolItem;
+        }
+
+        // Return a response with the created tool items
+        return response()->json($newToolItems, 201);
     }
 
     /**
