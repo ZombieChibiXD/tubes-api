@@ -5,24 +5,13 @@ namespace App\Policies;
 use App\Models\User;
 use Illuminate\Support\Facades\Log;
 
-class UserPolicy
+class UserPolicy extends AbstractPolicy
 {
-    private function isAdmin(User $user): bool
+    public function name()
     {
-        return $user->id;
+        return 'UserPolicy';
     }
-
-    private function log(string $context, User $user): void
-    {
-        Log::debug('UserPolicy::' . $context);
-        Log::debug('User Details: ', ['user' => $user]);
-    }
-    private function logModel(string $context, User $user, User $model): void
-    {
-        $this->log($context, $user);
-        Log::debug('Model Details: ', ['model' => $model]);
-    }
-
+    
     /**
      * Determine whether the user can view any models.
      */
@@ -37,7 +26,7 @@ class UserPolicy
      */
     public function view(User $user, User $model): bool
     {
-        $this->logModel('view', $user, $model);
+        $this->log('view', $user, $model);
         return $this->isAdmin($user);
     }
 
@@ -55,7 +44,7 @@ class UserPolicy
      */
     public function update(User $user, User $model): bool
     {
-        $this->logModel('update', $user, $model);
+        $this->log('update', $user, $model);
         return $this->isAdmin($user);
     }
 
@@ -64,7 +53,7 @@ class UserPolicy
      */
     public function delete(User $user, User $model): bool
     {
-        $this->logModel('delete', $user, $model);
+        $this->log('delete', $user, $model);
         return $this->isAdmin($user);
     }
 
@@ -73,7 +62,7 @@ class UserPolicy
      */
     public function restore(User $user, User $model): bool
     {
-        $this->logModel('restore', $user, $model);
+        $this->log('restore', $user, $model);
         return $this->isAdmin($user);
     }
 
@@ -82,7 +71,7 @@ class UserPolicy
      */
     public function forceDelete(User $user, User $model): bool
     {
-        $this->logModel('forceDelete', $user, $model);
+        $this->log('forceDelete', $user, $model);
         return $this->isAdmin($user);
     }
 }
