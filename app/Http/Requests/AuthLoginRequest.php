@@ -40,7 +40,7 @@ class AuthLoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'username' => 'string|required|exists:users,username',
+            'username' => 'string|required',
             'password' => 'string|required',
         ];
     }
