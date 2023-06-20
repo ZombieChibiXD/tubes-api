@@ -17,21 +17,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 // Add AuthController routes
 Route::post('/auth/login', [AuthController::class, 'login']);
-Route::post('/auth/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
-// Add Sample route to test api
-Route::get('/sample', function () {
-    return response()->json([
-        'message' => 'Hello World!',
-    ]);
-});
 
-// Add ToolMaterialController routes
 Route::group(['middleware' => 'auth:sanctum'], function () {
+    Route::post('/auth/logout', [AuthController::class, 'logout']);
+
     Route::apiResource('tool-materials', ToolMaterialController::class);
 });
