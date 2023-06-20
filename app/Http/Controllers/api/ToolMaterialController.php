@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ToolMaterial;
 use App\Http\Requests\StoreToolMaterialRequest;
 use App\Http\Requests\UpdateToolMaterialRequest;
+use Illuminate\Support\Facades\Log;
 
 /**
  * @OA\Tag(
@@ -21,6 +22,7 @@ class ToolMaterialController extends Controller
      *   tags={"ToolMaterial"},
      *   path="/api/tool-materials",
      *   summary="List tool materials",
+     *   security={{"bearerAuth":{}}},
      *   @OA\Response(
      *     response=200,
      *     description="OK",
@@ -45,6 +47,7 @@ class ToolMaterialController extends Controller
      *     tags={"ToolMaterial"},
      *   path="/api/tool-materials",
      *   summary="Create tool material",
+     *   security={{"bearerAuth":{}}},
      *   @OA\RequestBody(
      *     required=true,
      *     @OA\MediaType(
@@ -80,7 +83,7 @@ class ToolMaterialController extends Controller
      */
     public function store(StoreToolMaterialRequest $request)
     {
-        response()->json(ToolMaterial::create($request->validated()), 201);
+        return response()->json(ToolMaterial::create($request->validated()), 201);
     }
 
     /**
@@ -89,6 +92,7 @@ class ToolMaterialController extends Controller
      *   tags={"ToolMaterial"},
      *   path="/api/tool-materials/{toolMaterial}",
      *   summary="Show tool material",
+     *   security={{"bearerAuth":{}}},
      *   @OA\Parameter(
      *     name="toolMaterial",
      *     in="path",
@@ -125,6 +129,7 @@ class ToolMaterialController extends Controller
      *   tags={"ToolMaterial"},
      *   path="/api/tool-materials/{toolMaterial}",
      *   summary="Update tool material",
+     *   security={{"bearerAuth":{}}},
      *   @OA\Parameter(
      *     name="toolMaterial",
      *     in="path",
@@ -185,6 +190,7 @@ class ToolMaterialController extends Controller
      *   tags={"ToolMaterial"},
      *   path="/api/tool-materials/{toolMaterial}",
      *   summary="Delete tool material",
+     *   security={{"bearerAuth":{}}},
      *   @OA\Parameter(
      *     name="toolMaterial",
      *     in="path",

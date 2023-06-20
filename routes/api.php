@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\api\AuthController;
+use App\Http\Controllers\api\ToolMaterialController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -28,4 +29,9 @@ Route::get('/sample', function () {
     return response()->json([
         'message' => 'Hello World!',
     ]);
+});
+
+// Add ToolMaterialController routes
+Route::group(['middleware' => 'auth:sanctum'], function () {
+    Route::apiResource('tool-materials', ToolMaterialController::class);
 });
