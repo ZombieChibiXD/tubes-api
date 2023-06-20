@@ -30,7 +30,7 @@ class UpdateToolMaterialRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return $this->user()->can('update', ToolMaterial::class);
+        return $this->user()->can('update', $this->route('toolMaterial'));
     }
 
     /**
@@ -40,7 +40,7 @@ class UpdateToolMaterialRequest extends FormRequest
      */
     public function rules(): array
     {
-        $id = $this->route('id');
+        $id = $this->route('toolMaterial')->id;
         return [
             'name' => 'required|string|max:255|unique:tool_materials,name,' . $id,
             'description' => 'nullable|string',
