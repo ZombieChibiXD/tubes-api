@@ -15,10 +15,10 @@ return new class extends Migration
             $table->id();
             $table->foreignId('tool_material_id')
                     ->constrained('tool_materials')
-                    ->onDelete('cascade')->onUpdate('cascade');
+                    ->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('tool_product_id')
                     ->constrained('tool_products')
-                    ->onDelete('cascade')->onUpdate('cascade');
+                    ->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
         });
     }
