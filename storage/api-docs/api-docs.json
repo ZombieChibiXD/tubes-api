@@ -109,6 +109,139 @@
                 ]
             }
         },
+        "/api/tool-products/{toolProduct}/tool-items": {
+            "get": {
+                "tags": [
+                    "ToolItem"
+                ],
+                "summary": "List tool items",
+                "description": "Display a listing of the resource.",
+                "operationId": "76c9b35d64e016f688efafac9b54f7cf",
+                "parameters": [
+                    {
+                        "name": "toolProduct",
+                        "in": "path",
+                        "description": "The tool product id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ToolItem"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/tool-products/{toolProduct}/tool-items/{toolItem}": {
+            "get": {
+                "tags": [
+                    "ToolItem"
+                ],
+                "summary": "Get tool item details",
+                "description": "Display the specified resource.",
+                "operationId": "3e60860bd8d28561ebe0d73a3b5c3187",
+                "parameters": [
+                    {
+                        "name": "toolProduct",
+                        "in": "path",
+                        "description": "The tool product id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "toolItem",
+                        "in": "path",
+                        "description": "The tool item id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ToolItem"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "ToolItem"
+                ],
+                "summary": "Delete tool item",
+                "description": "Remove the specified resource from storage.",
+                "operationId": "12aba06b7eda771a7eebab740485b5eb",
+                "parameters": [
+                    {
+                        "name": "toolProduct",
+                        "in": "path",
+                        "description": "The tool product id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "toolItem",
+                        "in": "path",
+                        "description": "The tool item id",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ToolItem"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/tool-materials": {
             "get": {
                 "tags": [
@@ -728,6 +861,26 @@
                 },
                 "type": "object"
             },
+            "StoreToolItemRequest": {
+                "required": [
+                    "amount"
+                ],
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/StoreToolProductRequest"
+                    },
+                    {
+                        "properties": {
+                            "amount": {
+                                "description": "Amount of tool items",
+                                "type": "integer",
+                                "example": 10
+                            }
+                        }
+                    }
+                ]
+            },
             "StoreToolMaterialRequest": {
                 "required": [
                     "name"
@@ -788,6 +941,14 @@
                 },
                 "type": "object"
             },
+            "UpdateToolItemRequest": {
+                "required": [],
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/UpdateToolProductRequest"
+                    }
+                ]
+            },
             "UpdateToolMaterialRequest": {
                 "required": [
                     "name"
@@ -832,6 +993,42 @@
                         "description": "Maximum cutting speed (m/min)",
                         "type": "integer",
                         "example": 100
+                    },
+                    "created_at": {
+                        "description": "Timestamp of creation",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2020-01-01 00:00:00"
+                    },
+                    "updated_at": {
+                        "description": "Timestamp of last update",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2020-01-01 00:00:00"
+                    }
+                },
+                "type": "object"
+            },
+            "ToolItem": {
+                "required": [
+                    "tool_product_id",
+                    "item_code"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "Tool item ID",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "tool_product_id": {
+                        "description": "Tool product ID",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "item_code": {
+                        "description": "Tool item code",
+                        "type": "string",
+                        "example": "TI-001"
                     },
                     "created_at": {
                         "description": "Timestamp of creation",
@@ -1057,6 +1254,10 @@
         {
             "name": "Auth",
             "description": "Endpoints for user authentication"
+        },
+        {
+            "name": "ToolItem",
+            "description": "Everything about tool items"
         },
         {
             "name": "ToolMaterial",

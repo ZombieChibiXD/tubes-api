@@ -3,6 +3,7 @@
 use App\Http\Controllers\api\AuthController;
 use App\Http\Controllers\api\ToolMaterialController;
 use App\Http\Controllers\api\ToolProductController;
+use App\Http\Controllers\ToolItemController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -24,6 +25,7 @@ Route::post('/auth/login', [AuthController::class, 'login']);
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/auth/logout', [AuthController::class, 'logout']);
 
-    Route::apiResource('tool-materials', ToolMaterialController::class);
-    Route::apiResource('tool-products', ToolProductController::class);
+    Route::apiResource('/tool-materials', ToolMaterialController::class);
+    Route::apiResource('/tool-products', ToolProductController::class);
+    Route::apiResource('/tool-products/{toolProduct}/items', ToolItemController::class);
 });

@@ -75,4 +75,12 @@ class ToolProduct extends Model
     {
         return $this->belongsToMany(ToolMaterial::class, ToolProductMaterial::TABLE);
     }
+
+    /**
+     * Get the items for the tool product.
+     */
+    public function items()
+    {
+        return $this->hasMany(ToolItem::class);
+    }
 }

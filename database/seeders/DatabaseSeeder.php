@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             UserRoleSeeder::class,
             ToolMaterialSeeder::class,
             ToolProductSeeder::class,
+            ToolItemSeeder::class,
         ]);
     }
 }
