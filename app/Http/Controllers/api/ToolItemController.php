@@ -45,7 +45,7 @@ class ToolItemController extends Controller
      */
     public function index(ToolProduct $toolProduct)
     {
-        return response()->json($toolProduct->toolItems()->get());
+        return response()->json($toolProduct->items);
     }
 
     /**
