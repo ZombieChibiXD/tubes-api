@@ -54,7 +54,27 @@ class ToolItem extends Model
         'item_code'
     ];
 
-    function toolProduct()
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            /**
+             * @var ToolItemSequence $sequence
+             */
+            $sequence = ToolItemSequence::firstOrCreate([
+                'tool_product_id' => $model->tool_product_id
+            ]);
+            if (!$model->item_code) {
+                $model->item_code = $sequence->getNextValue();
+            } elseif ($sequence->next_value < $model->item_code) {
+                $sequence->next_value = $model->item_code + 1;
+                $sequence->save();
+            }
+        });
+    }
+
+    public function toolProduct()
     {
         return $this->belongsTo(ToolProduct::class);
     }

@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             ToolMaterialSeeder::class,
             ToolProductSeeder::class,
             ToolItemSeeder::class,
+            ToolItemSequenceSeeder::class,
         ]);
     }
 }
