@@ -16,7 +16,9 @@ class ToolMaterialSeeder extends Seeder
         $materials = [
             [
                 'id' => 1,
-                'name' => 'Karbida'
+                'name' => 'Karbida',
+                'created_at' => DatabaseSeeder::SEED_DATE_DEFAULT,
+                'updated_at' => DatabaseSeeder::SEED_DATE_DEFAULT
             ],
         ];
 

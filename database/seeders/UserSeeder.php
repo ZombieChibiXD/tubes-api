@@ -22,6 +22,8 @@ class UserSeeder extends Seeder
                 'email' => 'admin@mail.com',
                 'username' => 'admin',
                 'password' => $password,
+                'created_at' => DatabaseSeeder::SEED_DATE_DEFAULT,
+                'updated_at' => DatabaseSeeder::SEED_DATE_DEFAULT
             ],
             [
                 'id' => 2,
@@ -29,6 +31,8 @@ class UserSeeder extends Seeder
                 'email' => 'member@mail.com',
                 'username' => 'member',
                 'password' => $password,
+                'created_at' => DatabaseSeeder::SEED_DATE_DEFAULT,
+                'updated_at' => DatabaseSeeder::SEED_DATE_DEFAULT
             ],
         ];
 

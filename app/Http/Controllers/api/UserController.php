@@ -14,7 +14,6 @@ class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
-     * 
      * @OA\Get(
      *    path="/api/users",
      *   tags={"Users"},
@@ -25,7 +24,6 @@ class UserController extends Controller
      *  description="A list with users"
      * )
      * )
-     * 
      */
     public function index()
     {

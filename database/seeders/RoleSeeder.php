@@ -15,11 +15,16 @@ class RoleSeeder extends Seeder
         $roles = [
             [
                 'id' => 1,
-                'name' => 'ADMINISTRATOR'
+                'name' => 'ADMINISTRATOR',
+                'created_at' => DatabaseSeeder::SEED_DATE_DEFAULT,
+                'updated_at' => DatabaseSeeder::SEED_DATE_DEFAULT
+                
             ],
             [
                 'id' => 2,
-                'name' => 'MEMBER'
+                'name' => 'MEMBER',
+                'created_at' => DatabaseSeeder::SEED_DATE_DEFAULT,
+                'updated_at' => DatabaseSeeder::SEED_DATE_DEFAULT
             ]
         ];
 
