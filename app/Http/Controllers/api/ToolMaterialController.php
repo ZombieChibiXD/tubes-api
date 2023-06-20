@@ -200,7 +200,11 @@ class ToolMaterialController extends Controller
      *   ),
      *   @OA\Response(
      *     response=200,
-     *     description="No Content"
+     *     description="OK",
+     *     @OA\MediaType(
+     *       mediaType="application/json",
+     *       @OA\Schema(ref="#/components/schemas/ToolMaterial")
+     *     )
      *   ),
      *   @OA\Response(
      *     response=404,

@@ -337,7 +337,14 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "No Content"
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ToolMaterial"
+                                }
+                            }
+                        }
                     },
                     "404": {
                         "description": "Not Found",
