@@ -51,4 +51,13 @@ class ToolMaterial extends Model
         'name',
         'description',
     ];
+
+    
+    /**
+     * Get the tool products for the material.
+     */
+    public function products()
+    {
+        return $this->belongsToMany(ToolProduct::class, ToolProductMaterial::TABLE);
+    }
 }

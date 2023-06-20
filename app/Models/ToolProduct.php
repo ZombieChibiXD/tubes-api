@@ -66,4 +66,13 @@ class ToolProduct extends Model
         'min_cutting_speed',
         'max_cutting_speed',
     ];
+    
+
+    /**
+     * Get the materials for the tool product.
+     */
+    public function materials()
+    {
+        return $this->belongsToMany(ToolMaterial::class, ToolProductMaterial::TABLE);
+    }
 }
