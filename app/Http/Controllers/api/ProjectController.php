@@ -336,7 +336,11 @@ class ProjectController extends Controller
     {
         $fields = $request->validated();
         // Get all Machining Projects with the specified fields
-        $projects = MachiningProject::where($fields)->get();
+        $projects = MachiningProject::where($fields)
+                        ->with('toolProduct')
+                        ->with('toolItem')
+                        ->with('toolMaterial')
+                        ->get();
         return response()->json($projects, 200);
     }
 }
