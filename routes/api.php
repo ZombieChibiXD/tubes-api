@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\api\AuthController;
+use App\Http\Controllers\api\ToolController;
 use App\Http\Controllers\api\ToolMaterialController;
 use App\Http\Controllers\api\ToolProductController;
 use App\Http\Controllers\api\ToolItemController;
@@ -28,4 +29,6 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::apiResource('/tool-materials', ToolMaterialController::class);
     Route::apiResource('/tool-products', ToolProductController::class);
     Route::apiResource('/tool-products/{tool_product}/tool-items', ToolItemController::class);
+
+    Route::get('/tools', [ToolController::class, 'index']);
 });

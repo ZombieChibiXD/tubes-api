@@ -40,6 +40,18 @@ use Illuminate\Database\Eloquent\Model;
  *         format="date-time",
  *         description="Timestamp of last update",
  *         example="2020-01-01 00:00:00"
+ *     ),
+ *     @OA\Property(
+ *         property="products",
+ *         type="array",
+ *         description="Tool products",
+ *         @OA\Items(ref="#/components/schemas/ToolProduct")
+ *     ),
+ *     @OA\Property(
+ *         property="pivot",
+ *         type="object",
+ *         description="Pivot table",
+ *         ref="#/components/schemas/ToolProductMaterial"
  *     )
  * )
  */
@@ -58,6 +70,7 @@ class ToolMaterial extends Model
      */
     public function products()
     {
-        return $this->belongsToMany(ToolProduct::class, ToolProductMaterial::TABLE);
+        return $this->belongsToMany(ToolProduct::class, ToolProductMaterial::TABLE)
+                    ->withPivot('id', 'created_at', 'updated_at', 'tool_material_id', 'tool_product_id');
     }
 }

@@ -109,6 +109,36 @@
                 ]
             }
         },
+        "/api/tools": {
+            "get": {
+                "tags": [
+                    "Tool"
+                ],
+                "summary": "List tools",
+                "description": "Display a listing of the resource.",
+                "operationId": "4e3f08ad8dec92cfae8e63b3448256d2",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/ToolMaterial"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/tool-products/{toolProduct}/tool-items": {
             "get": {
                 "tags": [
@@ -1136,6 +1166,16 @@
                         "type": "string",
                         "format": "date-time",
                         "example": "2020-01-01 00:00:00"
+                    },
+                    "products": {
+                        "description": "Tool products",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ToolProduct"
+                        }
+                    },
+                    "pivot": {
+                        "$ref": "#/components/schemas/ToolProductMaterial"
                     }
                 },
                 "type": "object"
@@ -1171,6 +1211,59 @@
                         "description": "Maximum cutting speed (m/min)",
                         "type": "integer",
                         "example": 100
+                    },
+                    "created_at": {
+                        "description": "Timestamp of creation",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2020-01-01 00:00:00"
+                    },
+                    "updated_at": {
+                        "description": "Timestamp of last update",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2020-01-01 00:00:00"
+                    },
+                    "items": {
+                        "description": "Tool product items",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ToolItem"
+                        }
+                    },
+                    "materials": {
+                        "description": "Tool product materials",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ToolMaterial"
+                        }
+                    },
+                    "pivot": {
+                        "$ref": "#/components/schemas/ToolProductMaterial"
+                    }
+                },
+                "type": "object"
+            },
+            "ToolProductMaterial": {
+                "required": [
+                    "tool_product_id",
+                    "tool_material_id"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "Tool product material ID",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "tool_product_id": {
+                        "description": "Tool product ID",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "tool_material_id": {
+                        "description": "Tool material ID",
+                        "type": "integer",
+                        "example": 1
                     },
                     "created_at": {
                         "description": "Timestamp of creation",
@@ -1314,6 +1407,10 @@
         {
             "name": "Auth",
             "description": "Endpoints for user authentication"
+        },
+        {
+            "name": "Tool",
+            "description": "Everything about tools"
         },
         {
             "name": "ToolItem",
