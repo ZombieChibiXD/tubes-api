@@ -109,24 +109,125 @@
                 ]
             }
         },
-        "/api/tools": {
+        "/api/project": {
             "get": {
                 "tags": [
-                    "Tool"
+                    "Project"
                 ],
-                "summary": "List tools",
+                "summary": "List tools and ongoing project",
                 "description": "Display a listing of the resource.",
-                "operationId": "4e3f08ad8dec92cfae8e63b3448256d2",
+                "operationId": "1a149f32d40ca0b3cb5f2b00b78d901b",
                 "responses": {
                     "200": {
                         "description": "OK",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/ToolMaterial"
-                                    }
+                                    "properties": {
+                                        "materials": {
+                                            "description": "Tool materials",
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/ToolMaterial"
+                                            }
+                                        },
+                                        "projects": {
+                                            "description": "Tool products",
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/MachiningProject"
+                                            }
+                                        },
+                                        "machining": {
+                                            "description": "Machining parameters",
+                                            "properties": {
+                                                "workpiece_materials": {
+                                                    "description": "Workpiece materials",
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "machining_processes": {
+                                                    "description": "Machining processes",
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "n": {
+                                                    "description": "n Constant",
+                                                    "type": "number"
+                                                },
+                                                "c": {
+                                                    "description": "c Constant",
+                                                    "type": "number"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Project"
+                ],
+                "summary": "Create tool product",
+                "description": "Store a newly created resource in storage.",
+                "operationId": "bc8eb8624844672b2cc36d9f12bc547a",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreMachiningProjectRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreMachiningProjectRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreMachiningProjectRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MachiningProject"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "type": "object"
                                 }
                             }
                         }
@@ -951,6 +1052,79 @@
                 },
                 "type": "object"
             },
+            "StoreMachiningProjectRequest": {
+                "required": [
+                    "tool_material_id",
+                    "tool_product_id",
+                    "tool_item_id",
+                    "workpiece_material",
+                    "machining_process",
+                    "cutting_speed",
+                    "depth_of_cut",
+                    "feeding",
+                    "early_tool_life"
+                ],
+                "type": "object",
+                "allOf": [
+                    {
+                        "$ref": "#/components/schemas/UpdateToolItemRequest"
+                    },
+                    {
+                        "properties": {
+                            "tool_material_id": {
+                                "description": "Tool material ID",
+                                "type": "integer",
+                                "example": "1"
+                            },
+                            "tool_product_id": {
+                                "description": "Tool product ID",
+                                "type": "integer",
+                                "example": "1"
+                            },
+                            "tool_item_id": {
+                                "description": "Tool item ID",
+                                "type": "integer",
+                                "example": "1"
+                            },
+                            "workpiece_material": {
+                                "description": "Workpiece material",
+                                "type": "string",
+                                "example": "Stainless steel"
+                            },
+                            "machining_process": {
+                                "description": "Machining process",
+                                "type": "string",
+                                "example": "Milling"
+                            },
+                            "cutting_speed": {
+                                "description": "Cutting speed (m/min)",
+                                "type": "integer",
+                                "example": "100"
+                            },
+                            "depth_of_cut": {
+                                "description": "Depth of cut (mm)",
+                                "type": "integer",
+                                "example": "1"
+                            },
+                            "feeding": {
+                                "description": "Feeding (mm/min)",
+                                "type": "integer",
+                                "example": "100"
+                            },
+                            "early_tool_life": {
+                                "description": "Early tool life (min)",
+                                "type": "integer",
+                                "example": "10"
+                            },
+                            "is_active": {
+                                "description": "Is active",
+                                "type": "boolean",
+                                "example": "true"
+                            }
+                        }
+                    }
+                ]
+            },
             "StoreToolItemRequest": {
                 "required": [
                     "amount"
@@ -1032,12 +1206,7 @@
                 "type": "object"
             },
             "UpdateToolItemRequest": {
-                "required": [],
-                "allOf": [
-                    {
-                        "$ref": "#/components/schemas/UpdateToolProductRequest"
-                    }
-                ]
+                "required": []
             },
             "UpdateToolMaterialRequest": {
                 "required": [
@@ -1083,6 +1252,90 @@
                         "description": "Maximum cutting speed (m/min)",
                         "type": "integer",
                         "example": 100
+                    },
+                    "created_at": {
+                        "description": "Timestamp of creation",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2020-01-01 00:00:00"
+                    },
+                    "updated_at": {
+                        "description": "Timestamp of last update",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2020-01-01 00:00:00"
+                    }
+                },
+                "type": "object"
+            },
+            "MachiningProject": {
+                "required": [
+                    "tool_material_id",
+                    "tool_product_id",
+                    "tool_item_id",
+                    "workpiece_material",
+                    "machining_process",
+                    "cutting_speed",
+                    "depth_of_cut",
+                    "feeding",
+                    "early_tool_life",
+                    "is_active"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "Machining project ID",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "tool_material_id": {
+                        "description": "Tool material ID",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "tool_product_id": {
+                        "description": "Tool product ID",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "tool_item_id": {
+                        "description": "Tool item ID",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "workpiece_material": {
+                        "description": "Workpiece material",
+                        "type": "string",
+                        "example": "Carbon steel"
+                    },
+                    "machining_process": {
+                        "description": "Machining process",
+                        "type": "string",
+                        "example": "Turning"
+                    },
+                    "cutting_speed": {
+                        "description": "Cutting speed (m/min)",
+                        "type": "integer",
+                        "example": 100
+                    },
+                    "depth_of_cut": {
+                        "description": "Depth of cut (mm)",
+                        "type": "integer",
+                        "example": 50
+                    },
+                    "feeding": {
+                        "description": "Feeding (mm/r)",
+                        "type": "integer",
+                        "example": 100
+                    },
+                    "early_tool_life": {
+                        "description": "Early tool life (minute)",
+                        "type": "integer",
+                        "example": 100
+                    },
+                    "is_active": {
+                        "description": "Is active",
+                        "type": "boolean",
+                        "example": true
                     },
                     "created_at": {
                         "description": "Timestamp of creation",
@@ -1409,7 +1662,7 @@
             "description": "Endpoints for user authentication"
         },
         {
-            "name": "Tool",
+            "name": "Project",
             "description": "Everything about tools"
         },
         {
