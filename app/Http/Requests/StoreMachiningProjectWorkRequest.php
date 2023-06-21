@@ -88,7 +88,7 @@ class StoreMachiningProjectWorkRequest extends FormRequest
             'machining_project_id' => 'required|integer|exists:machining_projects,id',
             'product_id' => 'required|string',
             'initial_diameter' => $reqDecimalField,
-            'final_diameter' => 'required|numeric|min:0|gt:initial_diameter',
+            'final_diameter' => $reqDecimalField,
             'workpart_length' => $reqDecimalField,
             'machining_time' => 'required|integer|min:1',
             'product_quantity' => 'required|integer|min:1',
