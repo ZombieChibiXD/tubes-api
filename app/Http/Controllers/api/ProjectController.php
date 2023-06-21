@@ -4,9 +4,12 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreMachiningProjectRequest;
+use App\Http\Requests\StoreMachiningProjectWorkRequest;
 use App\Models\MachiningProject;
+use App\Models\MachiningProjectWork;
 use App\Models\ToolMaterial;
 use App\Models\ToolProduct;
+use Illuminate\Contracts\Cache\Store;
 use Illuminate\Http\Request;
 
 /**
@@ -163,8 +166,109 @@ class ProjectController extends Controller
     }
 
 
-    public function ongoing(){
-        return response()->json(MachiningProject::where('is_active', true)->get());
+    /**
+     * Store a newly created work on an ongoing project in storage.
+     * @OA\Post(
+     *     tags={"Project"},
+     *   path="/api/project/ongoing",
+     *   summary="Create work on an ongoing project",
+     *   security={{"bearerAuth":{}}},
+     *   @OA\RequestBody(
+     *     required=true,
+     *     @OA\MediaType(
+     *       mediaType="application/json",
+     *       @OA\Schema(ref="#/components/schemas/StoreMachiningProjectWorkRequest")
+     *     ),
+     *     @OA\MediaType(
+     *       mediaType="application/x-www-form-urlencoded",
+     *       @OA\Schema(ref="#/components/schemas/StoreMachiningProjectWorkRequest")
+     *     ),
+     *     @OA\MediaType(
+     *       mediaType="multipart/form-data",
+     *       @OA\Schema(ref="#/components/schemas/StoreMachiningProjectWorkRequest")
+     *     )
+     *   ),
+     *   @OA\Response(
+     *     response=201,
+     *     description="Created",
+     *     @OA\MediaType(
+     *       mediaType="application/json",
+     *       @OA\Schema(ref="#/components/schemas/MachiningProjectWork")
+     *     )
+     *   ),
+     *   @OA\Response(
+     *     response=400,
+     *     description="Bad Request",
+     *     @OA\MediaType(
+     *       mediaType="application/json",
+     *       @OA\Schema(ref="#/components/schemas/UnprocessableContentException")
+     *     )
+     *   ),
+     *   @OA\Response(
+     *     response=404,
+     *     description="Not Found",
+     *     @OA\MediaType(
+     *       mediaType="application/json",
+     *       @OA\Schema(ref="#/components/schemas/ModelNotFoundException")
+     *     )
+     *   ),
+     *   @OA\Response(
+     *     response=422,
+     *     description="Unprocessable Entity",
+     *     @OA\MediaType(
+     *       mediaType="application/json",
+     *       @OA\Schema(ref="#/components/schemas/UnprocessableContentException")
+     *     )
+     *   )
+     * )
+     */
+    public function ongoing(StoreMachiningProjectWorkRequest $request){
+        $fields = $request->validated();
+        /**
+         * @var MachiningProject $project
+         */
+        $project = MachiningProject::find($fields['machining_project_id']);
+        if (!$project) {
+            return response()->json([
+                'message' => 'Project not found.'
+            ], 404);
+        }
+        if (!$project->is_active) {
+            $message = 'Project is not active.';
+            return response()->json([
+                'message' => $message,
+                'errors' => [
+                    'tool_material_id' => [$message],
+                    'tool_product_id' => [$message],
+                    'tool_item_id' => [$message],
+                ]
+            ], 400);
+        }
+        $addedTime = $fields['machining_time'] * $fields['product_quantity'];
+        if ($project->remaining_time < $addedTime) {
+            $message = 'Machining time exceeds remaining tool life by '
+                        . ($addedTime - $project->remaining_time) . ' minutes.';
+            return response()->json([
+                'message' => $message,
+                'errors' => [
+                    'machining_time' => [$message],
+                    'product_quantity' => [$message],
+                    'remaining_tool_life' => [$message]
+                ]
+            ], 400);
+        }
+        /**
+         * @var MachiningProjectWork $machiningWork
+         */
+        $machiningWork = MachiningProjectWork::create($fields);
+        $project = $machiningWork->machiningProject;
+
+        if ($project->remaining_time == 0) {
+            $project->is_active = false;
+            $project->save();
+        }
+        
+        return response()->json($project, 201);
     }
     public function history()
     {

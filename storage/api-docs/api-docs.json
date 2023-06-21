@@ -240,6 +240,83 @@
                 ]
             }
         },
+        "/api/project/ongoing": {
+            "post": {
+                "tags": [
+                    "Project"
+                ],
+                "summary": "Create work on an ongoing project",
+                "description": "Store a newly created work on an ongoing project in storage.",
+                "operationId": "dbc4f1745f6a5eb6cb6bddf442282030",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreMachiningProjectWorkRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreMachiningProjectWorkRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/StoreMachiningProjectWorkRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/MachiningProjectWork"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UnprocessableContentException"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ModelNotFoundException"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UnprocessableContentException"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/tool-products/{toolProduct}/tool-items": {
             "get": {
                 "tags": [
@@ -1064,66 +1141,111 @@
                     "feeding",
                     "early_tool_life"
                 ],
-                "type": "object",
-                "allOf": [
-                    {
-                        "$ref": "#/components/schemas/UpdateToolItemRequest"
+                "properties": {
+                    "tool_material_id": {
+                        "description": "Tool material ID",
+                        "type": "integer",
+                        "example": "1"
                     },
-                    {
-                        "properties": {
-                            "tool_material_id": {
-                                "description": "Tool material ID",
-                                "type": "integer",
-                                "example": "1"
-                            },
-                            "tool_product_id": {
-                                "description": "Tool product ID",
-                                "type": "integer",
-                                "example": "1"
-                            },
-                            "tool_item_id": {
-                                "description": "Tool item ID",
-                                "type": "integer",
-                                "example": "1"
-                            },
-                            "workpiece_material": {
-                                "description": "Workpiece material",
-                                "type": "string",
-                                "example": "Stainless steel"
-                            },
-                            "machining_process": {
-                                "description": "Machining process",
-                                "type": "string",
-                                "example": "Milling"
-                            },
-                            "cutting_speed": {
-                                "description": "Cutting speed (m/min)",
-                                "type": "integer",
-                                "example": "100"
-                            },
-                            "depth_of_cut": {
-                                "description": "Depth of cut (mm)",
-                                "type": "integer",
-                                "example": "1"
-                            },
-                            "feeding": {
-                                "description": "Feeding (mm/min)",
-                                "type": "integer",
-                                "example": "100"
-                            },
-                            "early_tool_life": {
-                                "description": "Early tool life (min)",
-                                "type": "integer",
-                                "example": "10"
-                            },
-                            "is_active": {
-                                "description": "Is active",
-                                "type": "boolean",
-                                "example": "true"
-                            }
-                        }
+                    "tool_product_id": {
+                        "description": "Tool product ID",
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "tool_item_id": {
+                        "description": "Tool item ID",
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "workpiece_material": {
+                        "description": "Workpiece material",
+                        "type": "string",
+                        "example": "Stainless steel"
+                    },
+                    "machining_process": {
+                        "description": "Machining process",
+                        "type": "string",
+                        "example": "Milling"
+                    },
+                    "cutting_speed": {
+                        "description": "Cutting speed (m/min)",
+                        "type": "integer",
+                        "example": "100"
+                    },
+                    "depth_of_cut": {
+                        "description": "Depth of cut (mm)",
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "feeding": {
+                        "description": "Feeding (mm/min)",
+                        "type": "integer",
+                        "example": "100"
+                    },
+                    "early_tool_life": {
+                        "description": "Early tool life (min)",
+                        "type": "integer",
+                        "example": "10"
+                    },
+                    "is_active": {
+                        "description": "Is active",
+                        "type": "boolean",
+                        "example": "true"
                     }
-                ]
+                },
+                "type": "object"
+            },
+            "StoreMachiningProjectWorkRequest": {
+                "required": [
+                    "machining_project_id",
+                    "product_id",
+                    "initial_diameter",
+                    "final_diameter",
+                    "workpart_length",
+                    "product_quantity",
+                    "machining_time"
+                ],
+                "properties": {
+                    "machining_project_id": {
+                        "description": "Machining project ID",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "product_id": {
+                        "description": "Product ID",
+                        "type": "string",
+                        "example": "P0001"
+                    },
+                    "initial_diameter": {
+                        "description": "Initial diameter (mm)",
+                        "type": "number",
+                        "format": "float",
+                        "example": 100
+                    },
+                    "final_diameter": {
+                        "description": "Final diameter (mm)",
+                        "type": "number",
+                        "format": "float",
+                        "example": 50
+                    },
+                    "workpart_length": {
+                        "description": "Workpart length (mm)",
+                        "type": "number",
+                        "format": "float",
+                        "example": 100
+                    },
+                    "machining_time": {
+                        "description": "Machining time (min)",
+                        "type": "integer",
+                        "example": 10
+                    },
+                    "product_quantity": {
+                        "description": "Product quantity",
+                        "type": "integer",
+                        "example": 10
+                    }
+                },
+                "type": "object"
             },
             "StoreToolItemRequest": {
                 "required": [
@@ -1348,6 +1470,75 @@
                         "type": "string",
                         "format": "date-time",
                         "example": "2020-01-01 00:00:00"
+                    }
+                },
+                "type": "object"
+            },
+            "MachiningProjectWork": {
+                "required": [
+                    "machining_project_id",
+                    "product_id",
+                    "initial_diameter",
+                    "final_diameter",
+                    "workpart_length",
+                    "product_quantity",
+                    "machining_time"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "Machining project work ID",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "machining_project_id": {
+                        "description": "Machining project ID",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "product_id": {
+                        "description": "Product ID",
+                        "type": "string",
+                        "example": "P0001"
+                    },
+                    "initial_diameter": {
+                        "description": "Initial diameter (mm)",
+                        "type": "number",
+                        "format": "float",
+                        "example": 100
+                    },
+                    "final_diameter": {
+                        "description": "Final diameter (mm)",
+                        "type": "number",
+                        "format": "float",
+                        "example": 50
+                    },
+                    "workpart_length": {
+                        "description": "Workpart length (mm)",
+                        "type": "number",
+                        "format": "float",
+                        "example": 100
+                    },
+                    "machining_time": {
+                        "description": "Machining time (min)",
+                        "type": "integer",
+                        "example": 10
+                    },
+                    "product_quantity": {
+                        "description": "Product quantity",
+                        "type": "integer",
+                        "example": 10
+                    },
+                    "created_at": {
+                        "description": "Creation date",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2021-01-01 00:00:00"
+                    },
+                    "updated_at": {
+                        "description": "Last update date",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2021-01-01 00:00:00"
                     }
                 },
                 "type": "object"

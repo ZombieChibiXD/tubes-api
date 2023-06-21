@@ -118,5 +118,41 @@ class MachiningProject extends Model
         'early_tool_life',
         'is_active',
     ];
+    
+    /**
+     * The attributes that should be appended.
+     */
+    protected $appends = ['remaining_time'];
+    
+    public function toolMaterial()
+    {
+        return $this->belongsTo(ToolMaterial::class);
+    }
+
+    public function toolProduct()
+    {
+        return $this->belongsTo(ToolProduct::class);
+    }
+
+    public function toolItem()
+    {
+        return $this->belongsTo(ToolItem::class);
+    }
+
+    public function machiningProjectWorks()
+    {
+        return $this->hasMany(MachiningProjectWork::class);
+    }
+
+    // Remaining time is calculated by subtracting the machining time of each
+    // work from the early tool life of the machining project.
+    public function getRemainingTimeAttribute()
+    {
+        $remainingTime = $this->early_tool_life;
+        foreach ($this->machiningProjectWorks as $work) {
+            $remainingTime -= $work->machining_time;
+        }
+        return $remainingTime;
+    }
 
 }
