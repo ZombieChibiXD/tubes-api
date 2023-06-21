@@ -68,7 +68,7 @@ class StoreToolProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'code' => 'required|string|max:255|unique:tool_products',
+            'code' => 'required|string|max:255|unique:tool_products,code',
             'name' => 'string|max:255',
             'min_cutting_speed' => 'required|integer|min:0',
             'max_cutting_speed' => 'required|integer|min:0|gt:min_cutting_speed',

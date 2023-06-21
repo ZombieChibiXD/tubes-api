@@ -55,7 +55,7 @@ class UpdateToolProductRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return $this->user()->can('update', $this->route('toolProduct'));
+        return $this->user()->can('update', $this->route('tool_product'));
     }
 
     /**
@@ -65,8 +65,9 @@ class UpdateToolProductRequest extends FormRequest
      */
     public function rules(): array
     {
+        $toolProduct = $this->route('tool_product');
         return [
-            'code' => 'required|string|max:255|unique:tool_products',
+            'code' => 'required|string|max:255|unique:tool_products,code,' . $toolProduct->id,
             'name' => 'string|max:255',
             'min_cutting_speed' => 'required|integer|min:0',
             'max_cutting_speed' => 'required|integer|min:0|gt:min_cutting_speed',
