@@ -161,4 +161,13 @@ class ProjectController extends Controller
         $project->is_active = true;
         return response()->json($project, 201);
     }
+
+
+    public function ongoing(){
+        return response()->json(MachiningProject::where('is_active', true)->get());
+    }
+    public function history()
+    {
+        return response()->json(MachiningProject::where('is_active', false)->get());
+    }
 }

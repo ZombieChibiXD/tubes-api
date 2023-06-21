@@ -32,4 +32,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
 
     Route::get('/project', [ProjectController::class, 'index']);
     Route::post('/project', [ProjectController::class, 'store']);
+    Route::post('/project/ongoing', [ProjectController::class, 'ongoing']);
+    Route::post('/project/tool/history', [ProjectController::class, 'history']);
+
 });
