@@ -24,9 +24,9 @@ return new class extends Migration
                     ->cascadeOnDelete()->cascadeOnUpdate();
             $table->string('workpiece_material');
             $table->string('machining_process');
-            $table->unsignedInteger('cutting_speed');
-            $table->unsignedInteger('depth_of_cut');
-            $table->unsignedInteger('feeding');
+            $table->decimal('cutting_speed', 8, 2, true);
+            $table->decimal('depth_of_cut', 8, 2, true);
+            $table->decimal('feeding', 8, 2, true);
             $table->unsignedInteger('early_tool_life');
             $table->boolean('is_active')->default(true);
             $table->timestamps();

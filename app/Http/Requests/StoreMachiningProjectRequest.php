@@ -98,7 +98,7 @@ class StoreMachiningProjectRequest extends FormRequest
      */
     public function rules(): array
     {
-        $reqIntField = 'required|integer|min:0';
+        $reqDecimalField = 'required|numeric|min:0';
         $reqStrField = 'required|string';
         return [
             'tool_material_id' => 'required|integer|exists:tool_materials,id',
@@ -106,10 +106,10 @@ class StoreMachiningProjectRequest extends FormRequest
             'tool_item_id' => 'required|integer|exists:tool_items,id',
             'workpiece_material' => $reqStrField,
             'machining_process' => $reqStrField,
-            'cutting_speed' => $reqIntField,
-            'depth_of_cut' => $reqIntField,
-            'feeding' => $reqIntField,
-            'early_tool_life' => $reqIntField,
+            'cutting_speed' => $reqDecimalField,
+            'depth_of_cut' => $reqDecimalField,
+            'feeding' => $reqDecimalField,
+            'early_tool_life' => $reqDecimalField,
         ];
     }
 }
