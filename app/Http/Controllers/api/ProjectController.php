@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\RetreiveToolHistoryRequest;
 use App\Http\Requests\StoreMachiningProjectRequest;
 use App\Http\Requests\StoreMachiningProjectWorkRequest;
 use App\Models\MachiningProject;
@@ -82,9 +83,10 @@ class ProjectController extends Controller
     public function index()
     {
         $toolMaterials = ToolMaterial::with('products')->with('products.items')->get();
+        $machiningProjects = MachiningProject::where('is_active', true)->get();
         return response()->json([
             'materials' =>$toolMaterials,
-            'projects' => MachiningProject::all(),
+            'projects' => $machiningProjects,
             'machining' => [
                 'workpiece_materials' => [
                     'AISI 1018',
@@ -270,8 +272,71 @@ class ProjectController extends Controller
         
         return response()->json($project, 201);
     }
-    public function history()
+
+    /**
+     * Display the specified history of machining projects.
+     * @OA\Post(
+     *   tags={"Project"},
+     *   path="/api/project/tool/history",
+     *   summary="Get history of machining projects",
+     *   security={{"bearerAuth":{}}},
+     *   @OA\RequestBody(
+     *     required=true,
+     *     @OA\MediaType(
+     *       mediaType="application/json",
+     *       @OA\Schema(ref="#/components/schemas/RetreiveToolHistoryRequest")
+     *     ),
+     *     @OA\MediaType(
+     *       mediaType="application/x-www-form-urlencoded",
+     *       @OA\Schema(ref="#/components/schemas/RetreiveToolHistoryRequest")
+     *     ),
+     *     @OA\MediaType(
+     *       mediaType="multipart/form-data",
+     *       @OA\Schema(ref="#/components/schemas/RetreiveToolHistoryRequest")
+     *     )
+     *   ),
+     *   @OA\Response(
+     *     response=200,
+     *     description="OK",
+     *     @OA\MediaType(
+     *       mediaType="application/json",
+     *       @OA\Schema(
+     *         type="array",
+     *         @OA\Items(ref="#/components/schemas/MachiningProject")
+     *       )
+     *     )
+     *   ),
+     *   @OA\Response(
+     *     response=400,
+     *     description="Bad Request",
+     *     @OA\MediaType(
+     *       mediaType="application/json",
+     *       @OA\Schema(ref="#/components/schemas/UnprocessableContentException")
+     *     )
+     *   ),
+     *   @OA\Response(
+     *     response=404,
+     *     description="Not Found",
+     *     @OA\MediaType(
+     *       mediaType="application/json",
+     *       @OA\Schema(ref="#/components/schemas/ModelNotFoundException")
+     *     )
+     *   ),
+     *   @OA\Response(
+     *     response=422,
+     *     description="Unprocessable Entity",
+     *     @OA\MediaType(
+     *       mediaType="application/json",
+     *       @OA\Schema(ref="#/components/schemas/UnprocessableContentException")
+     *     )
+     *   )
+     * )
+     */
+    public function history(RetreiveToolHistoryRequest $request)
     {
-        return response()->json(MachiningProject::where('is_active', false)->get());
+        $fields = $request->validated();
+        // Get all Machining Projects with the specified fields
+        $projects = MachiningProject::where($fields)->get();
+        return response()->json($projects, 200);
     }
 }

@@ -317,6 +317,86 @@
                 ]
             }
         },
+        "/api/project/tool/history": {
+            "post": {
+                "tags": [
+                    "Project"
+                ],
+                "summary": "Get history of machining projects",
+                "description": "Display the specified history of machining projects.",
+                "operationId": "efa6d20a5a5e752bf19114f9b4e95576",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RetreiveToolHistoryRequest"
+                            }
+                        },
+                        "application/x-www-form-urlencoded": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RetreiveToolHistoryRequest"
+                            }
+                        },
+                        "multipart/form-data": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RetreiveToolHistoryRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/MachiningProject"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UnprocessableContentException"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ModelNotFoundException"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Unprocessable Entity",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/UnprocessableContentException"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/tool-products/{toolProduct}/tool-items": {
             "get": {
                 "tags": [
@@ -1125,6 +1205,31 @@
                         "description": "User's password",
                         "type": "string",
                         "example": "password"
+                    }
+                },
+                "type": "object"
+            },
+            "RetreiveToolHistoryRequest": {
+                "required": [
+                    "tool_material_id",
+                    "tool_product_id",
+                    "tool_item_id"
+                ],
+                "properties": {
+                    "tool_material_id": {
+                        "description": "Tool material ID",
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "tool_product_id": {
+                        "description": "Tool product ID",
+                        "type": "integer",
+                        "example": "1"
+                    },
+                    "tool_item_id": {
+                        "description": "Tool item ID",
+                        "type": "integer",
+                        "example": "1"
                     }
                 },
                 "type": "object"
