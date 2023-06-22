@@ -1723,6 +1723,9 @@
                         "type": "string",
                         "format": "date-time",
                         "example": "2020-01-01 00:00:00"
+                    },
+                    "tool_product": {
+                        "$ref": "#/components/schemas/ToolProduct"
                     }
                 },
                 "type": "object"

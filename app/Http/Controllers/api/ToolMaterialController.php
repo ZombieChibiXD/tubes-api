@@ -38,7 +38,7 @@ class ToolMaterialController extends Controller
      */
     public function index()
     {
-        return response()->json(ToolMaterial::all());
+        return response()->json(ToolMaterial::with('products')->get());
     }
 
     /**
@@ -120,6 +120,7 @@ class ToolMaterialController extends Controller
      */
     public function show(ToolMaterial $toolMaterial)
     {
+        $toolMaterial->load('products');
         return response()->json($toolMaterial);
     }
 

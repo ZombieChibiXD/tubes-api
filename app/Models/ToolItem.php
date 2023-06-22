@@ -42,7 +42,12 @@ use Illuminate\Database\Eloquent\Model;
  *         format="date-time",
  *         description="Timestamp of last update",
  *         example="2020-01-01 00:00:00"
- *     )
+ *     ),
+ *     @OA\Property(
+ *         property="tool_product",
+ *         ref="#/components/schemas/ToolProduct",
+ *         description="Tool product"
+ *      )
  * )
  */
 class ToolItem extends Model

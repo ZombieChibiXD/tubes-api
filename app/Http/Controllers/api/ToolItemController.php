@@ -149,6 +149,8 @@ class ToolItemController extends Controller
      */
     public function show(ToolProduct $toolProduct, ToolItem $toolItem)
     {
+        $toolItem->load('toolProduct');
+        $toolItem->load('toolProduct.materials');
         return response()->json($toolItem);
     }
 
@@ -157,7 +159,8 @@ class ToolItemController extends Controller
      */
     public function update(ToolProduct $toolProduct, UpdateToolItemRequest $request, ToolItem $toolItem)
     {
-        // TODO: Update the tool item
+        // Throw 404 route does not exist
+        abort(404);
     }
 
     /**
