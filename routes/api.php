@@ -5,6 +5,7 @@ use App\Http\Controllers\api\ProjectController;
 use App\Http\Controllers\api\ToolMaterialController;
 use App\Http\Controllers\api\ToolProductController;
 use App\Http\Controllers\api\ToolItemController;
+use App\Http\Controllers\api\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -34,5 +35,6 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/project', [ProjectController::class, 'store']);
     Route::post('/project/ongoing', [ProjectController::class, 'ongoing']);
     Route::post('/project/tool/history', [ProjectController::class, 'history']);
-
+    
+    Route::apiResource('/users', UserController::class);
 });

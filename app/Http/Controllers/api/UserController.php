@@ -27,7 +27,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json(User::all());
     }
 
     /**
@@ -35,7 +35,7 @@ class UserController extends Controller
      */
     public function store(UserCreateRequest $request)
     {
-        //
+        return response()->json(User::create($request->validated()), 201);
     }
 
     /**
@@ -43,7 +43,7 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        //
+        return response()->json($user);
     }
 
     /**
@@ -51,7 +51,8 @@ class UserController extends Controller
      */
     public function update(UserUpdateRequest $request, User $user)
     {
-        //
+        $user->update($request->validated());
+        return response()->json($user);
     }
 
     /**
@@ -59,6 +60,7 @@ class UserController extends Controller
      */
     public function destroy(User $user)
     {
-        //
+        $user->delete();
+        return response()->json($user);
     }
 }
