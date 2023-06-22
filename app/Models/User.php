@@ -52,7 +52,25 @@ use Laravel\Sanctum\HasApiTokens;
  *         format="date-time",
  *         description="Timestamp of last user update",
  *         example="2020-01-01 00:00:00"
- *     )
+ *     ),
+ *     @OA\Property(
+ *       property="roles",
+ *       type="array",
+ *       description="User roles",
+ *       @OA\Items(
+ *         type="object",
+ *         ref="#/components/schemas/Role"
+ *       )
+ *     ),
+ *     @OA\Property(
+ *       property="roles_names",
+ *       type="array",
+ *       description="User roles names",
+ *       @OA\Items(
+ *         type="string",
+ *         example="admin"
+ *       )
+ *     ),
  * ),
  * @OA\Schema(
  *     schema="NewAccessToken",
@@ -161,6 +179,12 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    /**
+     * The attributes that should be appended.
+     */
+    protected $appends = [
+        'role_names',
+    ];
 
     /**
      * Get the roles that belong to the user.
@@ -183,6 +207,14 @@ class User extends Authenticatable
      */
     public function getRoleNames()
     {
-        return $this->roles()->pluck('name')->toArray();
+        return $this->roles()->orderBy('name')->pluck('name')->toArray();
+    }
+
+    /**
+     * Get role names of the user.
+     */
+    public function getRoleNamesAttribute()
+    {
+        return $this->getRoleNames();
     }
 }

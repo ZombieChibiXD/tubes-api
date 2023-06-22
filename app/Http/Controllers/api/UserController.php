@@ -9,25 +9,40 @@ use App\Models\User;
 use Illuminate\Http\Request;
 
 
-
+/**
+ * @OA\Tag(
+ *     name="Users",
+ *     description="API Endpoints of Users"
+ * )
+ */
 class UserController extends Controller
 {
     /**
      * Display a listing of the resource.
      * @OA\Get(
      *    path="/api/users",
-     *   tags={"Users"},
-     *  summary="List Users",
-     * operationId="listUsers",
-     * @OA\Response(
-     *   response=200,
-     *  description="A list with users"
-     * )
+     *    summary="Get All Users",
+     *    tags={"Users"},
+     *    security={
+     *      {"bearerAuth": {}}
+     *    },
+     *    @OA\Response(
+     *      response=200,
+     *      description="Success",
+     *      @OA\JsonContent(
+     *        type="array",
+     *        @OA\Items(ref="#/components/schemas/User")
+     *      )
+     *    ),
+     *    @OA\Response(
+     *      response=401,
+     *      description="Unauthenticated"
+     *    )
      * )
      */
     public function index()
     {
-        return response()->json(User::all());
+        return response()->json(User::with('roles')->get());
     }
 
     /**
