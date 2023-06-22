@@ -235,28 +235,29 @@ class ProjectController extends Controller
                 'message' => 'Project not found.'
             ], 404);
         }
-        if (!$project->is_active) {
-            $message = 'Project is not active.';
-            return response()->json([
-                'message' => $message,
-                'errors' => [
-                    'tool_material_id' => [$message],
-                    'tool_product_id' => [$message],
-                    'tool_item_id' => [$message],
-                ]
-            ], 400);
-        }
+        $failed = false;
         $addedTime = $fields['machining_time'] * $fields['product_quantity'];
+        $errors = [];
+        $message = 'Unknown error';
         if ($project->remaining_time < $addedTime) {
-            $message = 'Machining time exceeds remaining tool life by '
+            $message = $remainMessage = 'Machining time exceeds remaining tool life by '
                         . ($addedTime - $project->remaining_time) . ' minutes.';
+            $failed = true;
+            $errors['machining_time'] = [$remainMessage];
+            $errors['product_quantity'] = [$remainMessage];
+            $errors['remaining_tool_life'] = [$remainMessage];
+        }
+        if (!$project->is_active) {
+            $failed = true;
+            $message = 'Project is not active.';
+            $errors['tool_material_id'] = $message;
+            $errors['tool_product_id'] = $message;
+            $errors['tool_item_id'] = $message;
+        }
+        if ($failed) {
             return response()->json([
                 'message' => $message,
-                'errors' => [
-                    'machining_time' => [$message],
-                    'product_quantity' => [$message],
-                    'remaining_tool_life' => [$message]
-                ]
+                'errors' => $errors
             ], 400);
         }
         /**
