@@ -82,7 +82,14 @@ class ToolProductController extends Controller
      */
     public function store(StoreToolProductRequest $request)
     {
-        return response()->json(ToolProduct::create($request->validated()), 201);
+        $fields = $request->validated();
+        /**
+         * @var ToolProduct $toolProduct
+         */
+        $toolProduct = ToolProduct::create($fields);
+        $toolProduct->materials()->sync($fields['tool_material_ids']);
+        $toolProduct->load('materials');
+        return response()->json($toolProduct, 201);
     }
 
     /**
@@ -119,7 +126,7 @@ class ToolProductController extends Controller
      */
     public function show(ToolProduct $toolProduct)
     {
-        return response()->json($toolProduct);
+        return response()->json($toolProduct->load('materials'));
     }
 
     /**
@@ -179,7 +186,14 @@ class ToolProductController extends Controller
      */
     public function update(UpdateToolProductRequest $request, ToolProduct $toolProduct)
     {
+        
+        $fields = $request->validated();
+        /**
+         * @var ToolProduct $tool_product
+         */
         $toolProduct->update($request->validated());
+        $toolProduct->materials()->sync($fields['tool_material_ids']);
+        $toolProduct->load('materials');
         return response()->json($toolProduct);
     }
 

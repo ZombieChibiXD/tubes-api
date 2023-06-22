@@ -33,18 +33,13 @@ use Illuminate\Foundation\Http\FormRequest;
  *         description="Maximum cutting speed (m/min)"
  *     ),
  *     @OA\Property(
- *         property="created_at",
- *         type="string",
- *         format="date-time",
- *         description="Timestamp of creation",
- *         example="2020-01-01 00:00:00"
- *     ),
- *     @OA\Property(
- *         property="updated_at",
- *         type="string",
- *         format="date-time",
- *         description="Timestamp of last update",
- *         example="2020-01-01 00:00:00"
+ *         property="tool_material_ids",
+ *         type="array",
+ *         @OA\Items(
+ *           type="integer",
+ *           example=1,
+ *           description="Tool material ID"
+ *         )
  *     )
  * )
  */
@@ -71,6 +66,24 @@ class UpdateToolProductRequest extends FormRequest
             'name' => 'string|max:255',
             'min_cutting_speed' => 'required|integer|min:0',
             'max_cutting_speed' => 'required|integer|min:0|gt:min_cutting_speed',
+            'tool_material_ids' => 'array',
+            'tool_material_ids.*' => 'required|integer|exists:tool_materials,id',
         ];
     }
+
+
+    /**
+     * Prepare the data for validation.
+     *
+     * @return void
+     */
+    protected function prepareForValidation()
+    {
+        // Convert material_ids to an array if it is a comma-separated string
+        $this->merge([
+            'tool_material_ids' => is_string($this->tool_material_ids) ?
+                explode(',', $this->tool_material_ids) : $this->tool_material_ids ?? [],
+        ]);
+    }
+
 }
