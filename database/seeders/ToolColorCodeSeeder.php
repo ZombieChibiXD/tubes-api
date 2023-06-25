@@ -66,6 +66,9 @@ class ToolColorCodeSeeder extends Seeder
                 'color' => '#808080'
             ]
         ];
+        foreach ($colors as $key => $color) {
+            $colors[$key]['created_at'] = $colors[$key]['updated_at'] = DatabaseSeeder::SEED_DATE_DEFAULT;
+        }
 
         ToolColorCode::withoutEvents(function () use ($colors) {
             ToolColorCode::insert($colors);

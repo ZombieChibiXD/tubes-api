@@ -8,6 +8,7 @@ use App\Http\Requests\StoreMachiningProjectRequest;
 use App\Http\Requests\StoreMachiningProjectWorkRequest;
 use App\Models\MachiningProject;
 use App\Models\MachiningProjectWork;
+use App\Models\ToolColorCode;
 use App\Models\ToolMaterial;
 use App\Models\ToolProduct;
 use Illuminate\Contracts\Cache\Store;
@@ -29,6 +30,14 @@ class ProjectController extends Controller
      *   path="/api/project",
      *   summary="List tools and ongoing project",
      *   security={{"bearerAuth":{}}},
+     *   @OA\Parameter(
+     *     name="filter",
+     *     in="query",
+     *     required=false,
+     *     @OA\Schema(type="string"),
+     *     description="Filter tools by status (NEW, ONGOING, HISTORY)",
+     *     example="NEW"
+     *   ),
      *   @OA\Response(
      *     response=200,
      *     description="OK",
@@ -80,12 +89,27 @@ class ProjectController extends Controller
      *   )
      * )
      */
-    public function index()
+    public function index(Request $request)
     {
-        $toolMaterials = ToolMaterial::with('products');
+        $filter = $request->query('filter', 'NEW');
+        $filterItem = function ($q) use ($filter) {
+            $q->project($filter);
+        };
+        $filterToolbox = function ($q) use ($filterItem) {
+            $q->withWhereHas('toolItems', $filterItem);
+        };
+        $filterProduct = function ($q) use ($filterToolbox) {
+            $q->withWhereHas('toolboxes', $filterToolbox);
+        };
+        $builder = ToolMaterial::withWhereHas('products', $filterProduct);
+
+
+        $toolMaterials = $builder->get();
+        $colors = ToolColorCode::all();
         $machiningProjects = MachiningProject::where('is_active', true)->get();
         return response()->json([
-            'materials' =>$toolMaterials,
+            'materials' => $toolMaterials,
+            'colors' => $colors,
             'projects' => $machiningProjects,
             'machining' => [
                 'workpiece_materials' => [
@@ -155,10 +179,15 @@ class ProjectController extends Controller
         $activeProject = MachiningProject::where('tool_item_id', $fields['tool_item_id'])
             ->where('is_active', true)
             ->first();
-        
+
         if ($activeProject) {
             return response()->json([
-                'message' => 'An active project with the same tool item already exists.'
+                'message' => 'An active project with the same tool item already exists.',
+                'errors' => [
+                    'tool_item_id' => [
+                        'An active project with the same tool item already exists.'
+                    ]
+                ]
             ], 400);
         }
 
@@ -224,7 +253,8 @@ class ProjectController extends Controller
      *   )
      * )
      */
-    public function ongoing(StoreMachiningProjectWorkRequest $request){
+    public function ongoing(StoreMachiningProjectWorkRequest $request)
+    {
         $fields = $request->validated();
         /**
          * @var MachiningProject $project
@@ -241,7 +271,7 @@ class ProjectController extends Controller
         $message = 'Unknown error';
         if ($project->remaining_time < $addedTime) {
             $message = $remainMessage = 'Machining time exceeds remaining tool life by '
-                        . ($addedTime - $project->remaining_time) . ' minutes.';
+                . ($addedTime - $project->remaining_time) . ' minutes.';
             $failed = true;
             $errors['machining_time'] = [$remainMessage];
             $errors['product_quantity'] = [$remainMessage];
@@ -270,7 +300,7 @@ class ProjectController extends Controller
             $project->is_active = false;
             $project->save();
         }
-        
+
         return response()->json($project, 201);
     }
 
@@ -338,10 +368,10 @@ class ProjectController extends Controller
         $fields = $request->validated();
         // Get all Machining Projects with the specified fields
         $projects = MachiningProject::where($fields)
-                        ->with('toolProduct')
-                        ->with('toolItem')
-                        ->with('toolMaterial')
-                        ->get();
+            ->with('toolProduct')
+            ->with('toolItem')
+            ->with('toolMaterial')
+            ->get();
         return response()->json($projects, 200);
     }
 }

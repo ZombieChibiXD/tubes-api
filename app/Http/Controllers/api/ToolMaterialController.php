@@ -20,7 +20,7 @@ class ToolMaterialController extends Controller
      * Display a listing of the resource.
      * @OA\Get(
      *   tags={"ToolMaterial"},
-     *   path="/api/tool-materials",
+     *   path="/api/tool/materials",
      *   summary="List tool materials",
      *   security={{"bearerAuth":{}}},
      *   @OA\Response(
@@ -38,14 +38,14 @@ class ToolMaterialController extends Controller
      */
     public function index()
     {
-        return response()->json(ToolMaterial::with('products')->get());
+        return response()->json(ToolMaterial::withCount('products')->get());
     }
 
     /**
      * Store a newly created resource in storage.
      * @OA\Post(
      *     tags={"ToolMaterial"},
-     *   path="/api/tool-materials",
+     *   path="/api/tool/materials",
      *   summary="Create tool material",
      *   security={{"bearerAuth":{}}},
      *   @OA\RequestBody(
@@ -90,7 +90,7 @@ class ToolMaterialController extends Controller
      * Display the specified resource.
      * @OA\Get(
      *   tags={"ToolMaterial"},
-     *   path="/api/tool-materials/{toolMaterial}",
+     *   path="/api/tool/materials/{toolMaterial}",
      *   summary="Show tool material",
      *   security={{"bearerAuth":{}}},
      *   @OA\Parameter(
@@ -120,15 +120,14 @@ class ToolMaterialController extends Controller
      */
     public function show(ToolMaterial $toolMaterial)
     {
-        $toolMaterial->load('products');
-        return response()->json($toolMaterial);
+        return response()->json($toolMaterial->load('products'));
     }
 
     /**
      * Update the specified resource in storage.
      * @OA\Put(
      *   tags={"ToolMaterial"},
-     *   path="/api/tool-materials/{toolMaterial}",
+     *   path="/api/tool/materials/{toolMaterial}",
      *   summary="Update tool material",
      *   security={{"bearerAuth":{}}},
      *   @OA\Parameter(
@@ -189,7 +188,7 @@ class ToolMaterialController extends Controller
      * Remove the specified resource from storage.
      * @OA\Delete(
      *   tags={"ToolMaterial"},
-     *   path="/api/tool-materials/{toolMaterial}",
+     *   path="/api/tool/materials/{toolMaterial}",
      *   summary="Delete tool material",
      *   security={{"bearerAuth":{}}},
      *   @OA\Parameter(

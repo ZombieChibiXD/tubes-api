@@ -19,7 +19,7 @@ class ToolProductController extends Controller
      * Display a listing of the resource.
      * @OA\Get(
      *   tags={"ToolProduct"},
-     *   path="/api/tool-products",
+     *   path="/api/tool/products",
      *   summary="List tool products",
      *   security={{"bearerAuth":{}}},
      *   @OA\Response(
@@ -37,14 +37,14 @@ class ToolProductController extends Controller
      */
     public function index()
     {
-        return response()->json(ToolProduct::all());
+        return response()->json(ToolProduct::withCount('toolboxes')->get());
     }
 
     /**
      * Store a newly created resource in storage.
      * @OA\Post(
      *     tags={"ToolProduct"},
-     *   path="/api/tool-products",
+     *   path="/api/tool/products",
      *   summary="Create tool material",
      *   security={{"bearerAuth":{}}},
      *   @OA\RequestBody(
@@ -89,7 +89,7 @@ class ToolProductController extends Controller
      * Display the specified resource.
      * @OA\Get(
      *   tags={"ToolProduct"},
-     *   path="/api/tool-products/{toolProduct}",
+     *   path="/api/tool/products/{toolProduct}",
      *   summary="Show tool material",
      *   security={{"bearerAuth":{}}},
      *   @OA\Parameter(
@@ -126,7 +126,7 @@ class ToolProductController extends Controller
      * Update the specified resource in storage.
      * @OA\Put(
      *   tags={"ToolProduct"},
-     *   path="/api/tool-products/{toolProduct}",
+     *   path="/api/tool/products/{toolProduct}",
      *   summary="Update tool material",
      *   security={{"bearerAuth":{}}},
      *   @OA\Parameter(
@@ -186,7 +186,7 @@ class ToolProductController extends Controller
      * Remove the specified resource from storage.
      * @OA\Delete(
      *   tags={"ToolProduct"},
-     *   path="/api/tool-products/{toolProduct}",
+     *   path="/api/tool/products/{toolProduct}",
      *   summary="Delete tool material",
      *   security={{"bearerAuth":{}}},
      *   @OA\Parameter(

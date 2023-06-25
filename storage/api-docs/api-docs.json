@@ -117,6 +117,17 @@
                 "summary": "List tools and ongoing project",
                 "description": "Display a listing of the resource.",
                 "operationId": "1a149f32d40ca0b3cb5f2b00b78d901b",
+                "parameters": [
+                    {
+                        "name": "filter",
+                        "in": "query",
+                        "description": "Filter tools by status (NEW [DEFAULT], ONGOING, HISTORY)",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -427,14 +438,14 @@
                 ]
             }
         },
-        "/api/tool-materials": {
+        "/api/tool/materials": {
             "get": {
                 "tags": [
                     "ToolMaterial"
                 ],
                 "summary": "List tool materials",
                 "description": "Display a listing of the resource.",
-                "operationId": "5d0f10df4208bde8d033d84eb36779cf",
+                "operationId": "7c655d682a57cd4d95b1a1affe85cd38",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -462,7 +473,7 @@
                 ],
                 "summary": "Create tool material",
                 "description": "Store a newly created resource in storage.",
-                "operationId": "6d462f01e1a46121d6966069a39b0919",
+                "operationId": "4585ad736de4aba7263fcea0c1907a77",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -512,14 +523,14 @@
                 ]
             }
         },
-        "/api/tool-materials/{toolMaterial}": {
+        "/api/tool/materials/{toolMaterial}": {
             "get": {
                 "tags": [
                     "ToolMaterial"
                 ],
                 "summary": "Show tool material",
                 "description": "Display the specified resource.",
-                "operationId": "5031309458fd470cd5f10181f44e6af4",
+                "operationId": "c83226e1fd8eb0aa5fe36f40aa92e2dd",
                 "parameters": [
                     {
                         "name": "toolMaterial",
@@ -565,7 +576,7 @@
                 ],
                 "summary": "Update tool material",
                 "description": "Update the specified resource in storage.",
-                "operationId": "6f9e0d345d46b07d7f32dcc7e69420d1",
+                "operationId": "423be84e49425a57a157dcd5a1dc7bb4",
                 "parameters": [
                     {
                         "name": "toolMaterial",
@@ -641,7 +652,7 @@
                 ],
                 "summary": "Delete tool material",
                 "description": "Remove the specified resource from storage.",
-                "operationId": "1b11535ec4259b3b986e9e1503f46817",
+                "operationId": "41403ed3eeaf70eb9451ce249dd63387",
                 "parameters": [
                     {
                         "name": "toolMaterial",
@@ -682,14 +693,14 @@
                 ]
             }
         },
-        "/api/tool-products": {
+        "/api/tool/products": {
             "get": {
                 "tags": [
                     "ToolProduct"
                 ],
                 "summary": "List tool products",
                 "description": "Display a listing of the resource.",
-                "operationId": "a4018f9f4c40196d873838c2b83a895a",
+                "operationId": "9dd1ebf8d1387b3f08559489ae0befd3",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -717,7 +728,7 @@
                 ],
                 "summary": "Create tool material",
                 "description": "Store a newly created resource in storage.",
-                "operationId": "18e08f5d4a875ed91ccc266d14a5b94a",
+                "operationId": "04d1343588c6f7351333596b8e43f84f",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -767,14 +778,14 @@
                 ]
             }
         },
-        "/api/tool-products/{toolProduct}": {
+        "/api/tool/products/{toolProduct}": {
             "get": {
                 "tags": [
                     "ToolProduct"
                 ],
                 "summary": "Show tool material",
                 "description": "Display the specified resource.",
-                "operationId": "b197d0aa9ad34b1da5d02e55655d5ed1",
+                "operationId": "d432a5e569b3a5e9abf92f0da2b42c36",
                 "parameters": [
                     {
                         "name": "toolProduct",
@@ -820,7 +831,7 @@
                 ],
                 "summary": "Update tool material",
                 "description": "Update the specified resource in storage.",
-                "operationId": "5cfb47f96b76c3b6d4aec11087d21cee",
+                "operationId": "d2c7021af20cc53d0fa13168e5547c83",
                 "parameters": [
                     {
                         "name": "toolProduct",
@@ -896,7 +907,7 @@
                 ],
                 "summary": "Delete tool material",
                 "description": "Remove the specified resource from storage.",
-                "operationId": "17f9a1622c200bc946a3bdcb747e3222",
+                "operationId": "edeeb57fafd26423513bff911b753df4",
                 "parameters": [
                     {
                         "name": "toolProduct",
@@ -1689,6 +1700,11 @@
                         "items": {
                             "$ref": "#/components/schemas/ToolProductToolbox"
                         }
+                    },
+                    "toolboxes_count": {
+                        "description": "Tool product toolboxes count",
+                        "type": "integer",
+                        "example": 1
                     }
                 },
                 "type": "object"

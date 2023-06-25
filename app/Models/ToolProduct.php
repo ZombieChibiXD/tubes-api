@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Concerns\HasRelationships;
 use Illuminate\Database\Eloquent\Concerns\HasTimestamps;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -69,12 +70,18 @@ use Illuminate\Database\Eloquent\Model;
  *         @OA\Items(
  *             ref="#/components/schemas/ToolProductToolbox"
  *         )
+ *     ),
+ *     @OA\Property(
+ *         property="toolboxes_count",
+ *         type="integer",
+ *         description="Tool product toolboxes count",
+ *         example=1
  *     )
  * )
  */
 class ToolProduct extends Model
 {
-    use HasFactory, HasTimestamps;
+    use HasFactory, HasTimestamps, HasRelationships;
 
     protected $fillable = [
         'tool_material_id',

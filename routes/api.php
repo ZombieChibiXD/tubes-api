@@ -24,15 +24,15 @@ Route::post('/auth/login', [AuthController::class, 'login']);
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/auth/logout', [AuthController::class, 'logout']);
-
-    Route::apiResource('/tool/materials', ToolMaterialController::class);
-    Route::apiResource('/tool/products', ToolProductController::class);
-    Route::apiResource('/tool/color-codes', ToolColorCodeController::class);
-
-    Route::get('/project', [ProjectController::class, 'index']);
-    Route::post('/project', [ProjectController::class, 'store']);
-    Route::post('/project/ongoing', [ProjectController::class, 'ongoing']);
-    Route::post('/project/tool/history', [ProjectController::class, 'history']);
     
     Route::apiResource('/users', UserController::class);
+    
+    
 });
+Route::get('/project', [ProjectController::class, 'index']);
+Route::post('/project', [ProjectController::class, 'store']);
+Route::post('/project/ongoing', [ProjectController::class, 'ongoing']);
+Route::post('/project/tool/history', [ProjectController::class, 'history']);
+Route::apiResource('/tool/materials', ToolMaterialController::class);
+Route::apiResource('/tool/products', ToolProductController::class);
+Route::apiResource('/tool/color-codes', ToolColorCodeController::class);
