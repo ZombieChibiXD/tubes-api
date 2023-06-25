@@ -13,60 +13,36 @@ class ToolColorCodeSeeder extends Seeder
      */
     public function run(): void
     {
-        $colors = [
-            [
-                'id' => 1,
-                'code' => 'R1', // Red
-                'color' => '#FF0000'
-            ],
-            [
-                'id' => 2,
-                'code' => 'B2', // Blue
-                'color' => '#0000FF'
-            ],
-            [
-                'id' => 3,
-                'code' => 'Y3', // Yellow
-                'color' => '#FFFF00'
-            ],
-            [
-                'id' => 4,
-                'code' => 'G4', // Green
-                'color' => '#00FF00'
-
-            ],
-            [
-                'id' => 5, // Brown
-                'code' => 'C5',
-                'color' => '#A52A2A'
-            ],
-            [
-                'id' => 6,
-                'code' => 'P6', // Purple
-                'color' => '#800080'
-            ],
-            [
-                'id' => 7,
-                'code' => 'O7', // Orange
-                'color' => '#FFA500'
-            ],
-            [
-                'id' => 8,
-                'code' => 'W8', // White
-                'color' => '#FFFFFF'
-            ],
-            [
-                'id' => 9,
-                'code' => 'K9', // Black
-                'color' => '#000000'
-            ],
-            [
-                'id' => 10,
-                'code' => 'G0', // Gray
-                'color' => '#808080'
-            ]
+        $arr = [
+            // ['id', 'code', 'color'],[
+            [1, 'R', '#FF0000'],
+            [2, 'B', '#0000FF'],
+            [3, 'Y', '#FFFF00'],
+            [4, 'G', '#00FF00'],
+            [5, 'T', '#A52A2A'],
+            [6, 'V', '#800080'],
+            [7, 'O', '#FFA500'],
+            [8, 'W', '#FFFFFF'],
+            [9, 'K', '#000000'],
+            [10, 'X', '#808080'],
+            [11, 'P', '#FFC0CB'],
+            [12, 'Q', '#40E0D0'],
+            [13, 'L', '#808000'],
+            [14, 'S', '#C0C0C0'],
+            [15, 'D', '#FFD700'],
+            [16, 'M', '#FF00FF'],
+            [17, 'C', '#00FFFF'],
+            [18, 'E', '#F5F5DC'],
+            [19, 'N', '#000080'],
+            [20, 'I', '#FFFFF0']
         ];
-        foreach ($colors as $key => $color) {
+        $colors = [];
+
+        foreach ($arr as $key => $color) {
+            $colors[$key] = [];
+            $colors[$key]['id'] = $color[0];
+            $colors[$key]['code'] = $color[1];
+            $colors[$key]['color'] = $color[2];
             $colors[$key]['created_at'] = $colors[$key]['updated_at'] = DatabaseSeeder::SEED_DATE_DEFAULT;
         }
 
