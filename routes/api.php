@@ -2,12 +2,10 @@
 
 use App\Http\Controllers\api\AuthController;
 use App\Http\Controllers\api\ProjectController;
+use App\Http\Controllers\api\ToolColorCodeController;
 use App\Http\Controllers\api\ToolMaterialController;
 use App\Http\Controllers\api\ToolProductController;
-use App\Http\Controllers\api\ToolItemController;
 use App\Http\Controllers\api\UserController;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,9 +25,9 @@ Route::post('/auth/login', [AuthController::class, 'login']);
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/auth/logout', [AuthController::class, 'logout']);
 
-    Route::apiResource('/tool-materials', ToolMaterialController::class);
-    Route::apiResource('/tool-products', ToolProductController::class);
-    Route::apiResource('/tool-products/{tool_product}/tool-items', ToolItemController::class);
+    Route::apiResource('/tool/materials', ToolMaterialController::class);
+    Route::apiResource('/tool/products', ToolProductController::class);
+    Route::apiResource('/tool/color-codes', ToolColorCodeController::class);
 
     Route::get('/project', [ProjectController::class, 'index']);
     Route::post('/project', [ProjectController::class, 'store']);

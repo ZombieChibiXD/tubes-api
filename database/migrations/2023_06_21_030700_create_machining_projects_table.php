@@ -13,12 +13,6 @@ return new class extends Migration
     {
         Schema::create('machining_projects', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('tool_material_id')
-                    ->constrained('tool_materials')
-                    ->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreignId('tool_product_id')
-                    ->constrained('tool_products')
-                    ->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('tool_item_id')
                     ->constrained('tool_items')
                     ->cascadeOnDelete()->cascadeOnUpdate();

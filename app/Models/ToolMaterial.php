@@ -46,12 +46,6 @@ use Illuminate\Database\Eloquent\Model;
  *         type="array",
  *         description="Tool products",
  *         @OA\Items(ref="#/components/schemas/ToolProduct")
- *     ),
- *     @OA\Property(
- *         property="pivot",
- *         type="object",
- *         description="Pivot table",
- *         ref="#/components/schemas/ToolProductMaterial"
  *     )
  * )
  */
@@ -70,7 +64,6 @@ class ToolMaterial extends Model
      */
     public function products()
     {
-        return $this->belongsToMany(ToolProduct::class, ToolProductMaterial::TABLE)
-                    ->withPivot('id', 'created_at', 'updated_at', 'tool_material_id', 'tool_product_id');
+        return $this->hasMany(ToolProduct::class);
     }
 }

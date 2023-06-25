@@ -82,7 +82,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        $toolMaterials = ToolMaterial::with('products')->with('products.items')->get();
+        $toolMaterials = ToolMaterial::with('products');
         $machiningProjects = MachiningProject::where('is_active', true)->get();
         return response()->json([
             'materials' =>$toolMaterials,

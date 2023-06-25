@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * @OA\Schema(
  *     schema="ToolItem",
- *     required={"tool_product_id", "item_code"},
+ *     required={"tool_product_toolbox_id", "tool_color_code_id"},
  *     @OA\Property(
  *         property="id",
  *         type="integer",
@@ -18,36 +18,39 @@ use Illuminate\Database\Eloquent\Model;
  *         example=1
  *     ),
  *     @OA\Property(
- *         property="tool_product_id",
+ *         property="tool_product_toolbox_id",
  *         type="integer",
- *         description="Tool product ID",
+ *         description="Tool product toolbox ID",
  *         example=1
  *     ),
  *     @OA\Property(
- *         property="item_code",
- *         type="string",
- *         description="Tool item code",
- *         example="TI-001"
+ *         property="tool_color_code_id",
+ *         type="integer",
+ *         description="Tool color code ID",
+ *         example=1
  *     ),
  *     @OA\Property(
  *         property="created_at",
  *         type="string",
  *         format="date-time",
- *         description="Timestamp of creation",
- *         example="2020-01-01 00:00:00"
+ *         description="Tool item created at",
+ *         example="2021-03-01 00:00:00"
  *     ),
  *     @OA\Property(
  *         property="updated_at",
  *         type="string",
  *         format="date-time",
- *         description="Timestamp of last update",
- *         example="2020-01-01 00:00:00"
+ *         description="Tool item updated at",
+ *         example="2021-03-01 00:00:00"
  *     ),
  *     @OA\Property(
- *         property="tool_product",
- *         ref="#/components/schemas/ToolProduct",
- *         description="Tool product"
- *      )
+ *         property="tool_product_toolbox",
+ *         ref="#/components/schemas/ToolProductToolbox"
+ *     ),
+ *     @OA\Property(
+ *         property="tool_color_code",
+ *         ref="#/components/schemas/ToolColorCode"
+ *     )
  * )
  */
 class ToolItem extends Model
@@ -55,32 +58,15 @@ class ToolItem extends Model
     use HasFactory, HasTimestamps;
 
     protected $fillable = [
-        'tool_product_id',
-        'item_code'
+        'tool_product_toolbox_id',
+        'tool_color_code_id'
     ];
 
-    protected static function boot()
+    /**
+     * Get the tool product toolbox that owns the tool item.
+     */
+    public function toolProductToolbox()
     {
-        parent::boot();
-
-        static::creating(function ($model) {
-            /**
-             * @var ToolItemSequence $sequence
-             */
-            $sequence = ToolItemSequence::firstOrCreate([
-                'tool_product_id' => $model->tool_product_id
-            ]);
-            if (!$model->item_code) {
-                $model->item_code = $sequence->getNextValue();
-            } elseif ($sequence->next_value < $model->item_code) {
-                $sequence->next_value = $model->item_code + 1;
-                $sequence->save();
-            }
-        });
-    }
-
-    public function toolProduct()
-    {
-        return $this->belongsTo(ToolProduct::class);
+        return $this->belongsTo(ToolProductToolbox::class);
     }
 }

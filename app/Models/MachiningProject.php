@@ -9,25 +9,13 @@ use Illuminate\Database\Eloquent\Model;
 /**
  * @OA\Schema(
  *     schema="MachiningProject",
- *     required={"tool_material_id", "tool_product_id", "tool_item_id",
+ *     required={"tool_item_id",
  *               "workpiece_material", "machining_process", "cutting_speed",
  *               "depth_of_cut", "feeding", "early_tool_life", "is_active"},
  *     @OA\Property(
  *         property="id",
  *         type="integer",
  *         description="Machining project ID",
- *         example=1
- *     ),
- *     @OA\Property(
- *         property="tool_material_id",
- *         type="integer",
- *         description="Tool material ID",
- *         example=1
- *     ),
- *     @OA\Property(
- *         property="tool_product_id",
- *         type="integer",
- *         description="Tool product ID",
  *         example=1
  *     ),
  *     @OA\Property(
@@ -107,8 +95,6 @@ class MachiningProject extends Model
     * @var array
     */
     protected $fillable = [
-        'tool_material_id',
-        'tool_product_id',
         'tool_item_id',
         'workpiece_material',
         'machining_process',
@@ -124,16 +110,6 @@ class MachiningProject extends Model
      */
     protected $appends = ['remaining_time'];
     
-    public function toolMaterial()
-    {
-        return $this->belongsTo(ToolMaterial::class);
-    }
-
-    public function toolProduct()
-    {
-        return $this->belongsTo(ToolProduct::class);
-    }
-
     public function toolItem()
     {
         return $this->belongsTo(ToolItem::class);

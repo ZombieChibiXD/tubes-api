@@ -2,28 +2,31 @@
 
 namespace Database\Seeders;
 
-use App\Models\ToolItem;
+use App\Models\ToolProductMaterial;
+use App\Models\ToolProductToolbox;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class ToolItemSeeder extends Seeder
+class ToolProductToolboxSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        $items = [];
-        for ($t=1; $t <= 4; $t++)  {
-            for ($i=1; $i <= 10; $i++) {
-                $items[] = [
-                    'tool_product_toolbox_id' => $t,
-                    'tool_color_code_id' => $i,
+        $toolToolbox = [];
+
+        for ($p = 1; $p <= 2; $p++) {
+            for ($t = 1; $t <= 2; $t++) {
+                $toolToolbox[] = [
+                    'tool_product_id' => $p,
+                    'code' => $t,
                     'created_at' => DatabaseSeeder::SEED_DATE_DEFAULT,
                     'updated_at' => DatabaseSeeder::SEED_DATE_DEFAULT
                 ];
             }
         }
-        ToolItem::insert($items);
+
+        ToolProductToolbox::insert($toolToolbox);
     }
 }

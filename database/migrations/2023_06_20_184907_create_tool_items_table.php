@@ -13,8 +13,12 @@ return new class extends Migration
     {
         Schema::create('tool_items', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('tool_product_id')->constrained('tool_products')->cascadeOnDelete()->cascadeOnUpdate();
-            $table->unsignedInteger('item_code');
+            $table->foreignId('tool_product_toolbox_id')
+                    ->constrained('tool_product_toolboxes')
+                    ->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('tool_color_code_id')
+                    ->constrained('tool_color_codes')
+                    ->cascadeOnDelete()->cascadeOnUpdate();
             $table->timestamps();
         });
     }

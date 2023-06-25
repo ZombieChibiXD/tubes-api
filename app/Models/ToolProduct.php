@@ -55,15 +55,7 @@ use Illuminate\Database\Eloquent\Model;
  *         example="2020-01-01 00:00:00"
  *     ),
  *     @OA\Property(
- *         property="items",
- *         type="array",
- *         description="Tool product items",
- *         @OA\Items(
- *           ref="#/components/schemas/ToolItem"
- *         )
- *     ),
- *     @OA\Property(
- *         property="materials",
+ *         property="material",
  *         type="array",
  *         description="Tool product materials",
  *         @OA\Items(
@@ -71,10 +63,12 @@ use Illuminate\Database\Eloquent\Model;
  *         )
  *     ),
  *     @OA\Property(
- *         property="pivot",
- *         type="object",
- *         description="Pivot table",
- *         ref="#/components/schemas/ToolProductMaterial"
+ *         property="toolboxes",
+ *         type="array",
+ *         description="Tool product toolboxes",
+ *         @OA\Items(
+ *             ref="#/components/schemas/ToolProductToolbox"
+ *         )
  *     )
  * )
  */
@@ -83,6 +77,7 @@ class ToolProduct extends Model
     use HasFactory, HasTimestamps;
 
     protected $fillable = [
+        'tool_material_id',
         'code',
         'name',
         'min_cutting_speed',
@@ -91,19 +86,18 @@ class ToolProduct extends Model
     
 
     /**
-     * Get the materials for the tool product.
+     * Get the material for the tool product.
      */
-    public function materials()
+    public function material()
     {
-        return $this->belongsToMany(ToolMaterial::class, ToolProductMaterial::TABLE)
-                    ->withPivot('id', 'created_at', 'updated_at');
+        return $this->belongsTo(ToolMaterial::class);
     }
 
     /**
-     * Get the items for the tool product.
+     * Get the toolboxes for the tool product.
      */
-    public function items()
-    {
-        return $this->hasMany(ToolItem::class);
+    public function toolboxes(){
+        return $this->hasMany(ToolProductToolbox::class);
     }
+
 }

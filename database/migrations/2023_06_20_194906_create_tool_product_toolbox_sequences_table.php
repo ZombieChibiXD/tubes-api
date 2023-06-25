@@ -11,14 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tool_product_material', function (Blueprint $table) {
+        Schema::create('tool_product_toolbox_sequences', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('tool_material_id')
-                    ->constrained('tool_materials')
-                    ->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('tool_product_id')
                     ->constrained('tool_products')
                     ->cascadeOnDelete()->cascadeOnUpdate();
+            $table->unsignedInteger('next_value')->default(1);
             $table->timestamps();
         });
     }
@@ -28,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tool_product_material');
+        Schema::dropIfExists('tool_product_toolbox_sequences');
     }
 };

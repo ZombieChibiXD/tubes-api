@@ -17,17 +17,21 @@ class ToolProductSeeder extends Seeder
         $products = [
             [
                 'id' => 1,
-                'code' => 'WNGM 080408 NM LT 1025',
-                'min_cutting_speed' => 165,
-                'max_cutting_speed' => 280,
+                'code' => 'WNGM 080408 NM LT 1000',
+                'prefix' => 'LRW00',
+                'min_cutting_speed' => 180,
+                'max_cutting_speed' => 245,
+                'tool_material_id' => 1,
                 'created_at' => DatabaseSeeder::SEED_DATE_DEFAULT,
                 'updated_at' => DatabaseSeeder::SEED_DATE_DEFAULT
             ],
             [
                 'id' => 2,
-                'code' => 'WNGM 080408 NM LT 1000',
-                'min_cutting_speed' => 180,
-                'max_cutting_speed' => 245,
+                'code' => 'WNGM 080408 NM LT 1025',
+                'prefix' => 'LRW25',
+                'min_cutting_speed' => 165,
+                'max_cutting_speed' => 280,
+                'tool_material_id' => 1,
                 'created_at' => DatabaseSeeder::SEED_DATE_DEFAULT,
                 'updated_at' => DatabaseSeeder::SEED_DATE_DEFAULT
             ]

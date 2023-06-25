@@ -7,7 +7,13 @@ use Illuminate\Foundation\Http\FormRequest;
 /**
  * @OA\Schema(
  *     schema="UpdateToolProductRequest",
- *     required={"code", "min_cutting_speed", "max_cutting_speed"},
+ *     required={"tool_material_id", "code", "min_cutting_speed", "max_cutting_speed"},
+ *     @OA\Property(
+ *         property="tool_material_id",
+ *         type="integer",
+ *         description="Tool material ID",
+ *         example=1
+ *     ),
  *     @OA\Property(
  *         property="code",
  *         type="string",
@@ -31,15 +37,6 @@ use Illuminate\Foundation\Http\FormRequest;
  *         type="integer",
  *         example=100,
  *         description="Maximum cutting speed (m/min)"
- *     ),
- *     @OA\Property(
- *         property="tool_material_ids",
- *         type="array",
- *         @OA\Items(
- *           type="integer",
- *           example=1,
- *           description="Tool material ID"
- *         )
  *     )
  * )
  */
@@ -62,28 +59,12 @@ class UpdateToolProductRequest extends FormRequest
     {
         $toolProduct = $this->route('tool_product');
         return [
+            'tool_material_id' => 'required|integer|exists:tool_materials,id',
             'code' => 'required|string|max:255|unique:tool_products,code,' . $toolProduct->id,
             'name' => 'string|max:255',
             'min_cutting_speed' => 'required|integer|min:0',
             'max_cutting_speed' => 'required|integer|min:0|gt:min_cutting_speed',
-            'tool_material_ids' => 'array',
-            'tool_material_ids.*' => 'required|integer|exists:tool_materials,id',
         ];
-    }
-
-
-    /**
-     * Prepare the data for validation.
-     *
-     * @return void
-     */
-    protected function prepareForValidation()
-    {
-        // Convert material_ids to an array if it is a comma-separated string
-        $this->merge([
-            'tool_material_ids' => is_string($this->tool_material_ids) ?
-                explode(',', $this->tool_material_ids) : $this->tool_material_ids ?? [],
-        ]);
     }
 
 }

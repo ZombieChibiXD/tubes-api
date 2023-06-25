@@ -397,25 +397,14 @@
                 ]
             }
         },
-        "/api/tool-products/{toolProduct}/tool-items": {
+        "/api/tool/color-codes": {
             "get": {
                 "tags": [
-                    "ToolItem"
+                    "ToolColorCode"
                 ],
-                "summary": "List tool items",
+                "summary": "List tool color codes",
                 "description": "Display a listing of the resource.",
-                "operationId": "76c9b35d64e016f688efafac9b54f7cf",
-                "parameters": [
-                    {
-                        "name": "toolProduct",
-                        "in": "path",
-                        "description": "The tool product id",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
+                "operationId": "b13fb398fdcc533c42999ea9818ef592",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -424,160 +413,8 @@
                                 "schema": {
                                     "type": "array",
                                     "items": {
-                                        "$ref": "#/components/schemas/ToolItem"
+                                        "$ref": "#/components/schemas/ToolColorCode"
                                     }
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            },
-            "post": {
-                "tags": [
-                    "ToolItem"
-                ],
-                "summary": "Create tool items",
-                "description": "Store a newly created resource in storage.",
-                "operationId": "d7eaddf0921f6ec19019ef98c884826a",
-                "parameters": [
-                    {
-                        "name": "toolProduct",
-                        "in": "path",
-                        "description": "The tool product id",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "requestBody": {
-                    "description": "The tool item request body",
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "amount"
-                                ],
-                                "properties": {
-                                    "amount": {
-                                        "description": "The amount of tool items to be created",
-                                        "type": "integer",
-                                        "example": 5
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "201": {
-                        "description": "Created",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/ToolItem"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
-        "/api/tool-products/{toolProduct}/tool-items/{toolItem}": {
-            "get": {
-                "tags": [
-                    "ToolItem"
-                ],
-                "summary": "Get tool item details",
-                "description": "Display the specified resource.",
-                "operationId": "3e60860bd8d28561ebe0d73a3b5c3187",
-                "parameters": [
-                    {
-                        "name": "toolProduct",
-                        "in": "path",
-                        "description": "The tool product id",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "toolItem",
-                        "in": "path",
-                        "description": "The tool item id",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ToolItem"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            },
-            "delete": {
-                "tags": [
-                    "ToolItem"
-                ],
-                "summary": "Delete tool item",
-                "description": "Remove the specified resource from storage.",
-                "operationId": "12aba06b7eda771a7eebab740485b5eb",
-                "parameters": [
-                    {
-                        "name": "toolProduct",
-                        "in": "path",
-                        "description": "The tool product id",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "name": "toolItem",
-                        "in": "path",
-                        "description": "The tool item id",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/ToolItem"
                                 }
                             }
                         }
@@ -1410,11 +1247,17 @@
             },
             "StoreToolProductRequest": {
                 "required": [
+                    "tool_material_id",
                     "code",
                     "min_cutting_speed",
                     "max_cutting_speed"
                 ],
                 "properties": {
+                    "tool_material_id": {
+                        "description": "Tool material ID",
+                        "type": "integer",
+                        "example": 1
+                    },
                     "code": {
                         "description": "Tool product code",
                         "type": "string",
@@ -1434,14 +1277,6 @@
                         "description": "Maximum cutting speed (m/min)",
                         "type": "integer",
                         "example": 100
-                    },
-                    "tool_material_ids": {
-                        "type": "array",
-                        "items": {
-                            "description": "Tool material ID",
-                            "type": "integer",
-                            "example": 1
-                        }
                     }
                 },
                 "type": "object"
@@ -1469,11 +1304,17 @@
             },
             "UpdateToolProductRequest": {
                 "required": [
+                    "tool_material_id",
                     "code",
                     "min_cutting_speed",
                     "max_cutting_speed"
                 ],
                 "properties": {
+                    "tool_material_id": {
+                        "description": "Tool material ID",
+                        "type": "integer",
+                        "example": 1
+                    },
                     "code": {
                         "description": "Tool product code",
                         "type": "string",
@@ -1493,22 +1334,12 @@
                         "description": "Maximum cutting speed (m/min)",
                         "type": "integer",
                         "example": 100
-                    },
-                    "tool_material_ids": {
-                        "type": "array",
-                        "items": {
-                            "description": "Tool material ID",
-                            "type": "integer",
-                            "example": 1
-                        }
                     }
                 },
                 "type": "object"
             },
             "MachiningProject": {
                 "required": [
-                    "tool_material_id",
-                    "tool_product_id",
                     "tool_item_id",
                     "workpiece_material",
                     "machining_process",
@@ -1521,16 +1352,6 @@
                 "properties": {
                     "id": {
                         "description": "Machining project ID",
-                        "type": "integer",
-                        "example": 1
-                    },
-                    "tool_material_id": {
-                        "description": "Tool material ID",
-                        "type": "integer",
-                        "example": 1
-                    },
-                    "tool_product_id": {
-                        "description": "Tool product ID",
                         "type": "integer",
                         "example": 1
                     },
@@ -1691,10 +1512,46 @@
                 },
                 "type": "object"
             },
+            "ToolColorCode": {
+                "required": [
+                    "code",
+                    "color"
+                ],
+                "properties": {
+                    "id": {
+                        "description": "Tool color code ID",
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "code": {
+                        "description": "Tool color code",
+                        "type": "string",
+                        "example": "R"
+                    },
+                    "color": {
+                        "description": "Tool color code color",
+                        "type": "string",
+                        "example": "#FF0000"
+                    },
+                    "created_at": {
+                        "description": "Tool color code created at",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2021-03-01 00:00:00"
+                    },
+                    "updated_at": {
+                        "description": "Tool color code updated at",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2021-03-01 00:00:00"
+                    }
+                },
+                "type": "object"
+            },
             "ToolItem": {
                 "required": [
-                    "tool_product_id",
-                    "item_code"
+                    "tool_product_toolbox_id",
+                    "tool_color_code_id"
                 ],
                 "properties": {
                     "id": {
@@ -1702,30 +1559,33 @@
                         "type": "integer",
                         "example": 1
                     },
-                    "tool_product_id": {
-                        "description": "Tool product ID",
+                    "tool_product_toolbox_id": {
+                        "description": "Tool product toolbox ID",
                         "type": "integer",
                         "example": 1
                     },
-                    "item_code": {
-                        "description": "Tool item code",
-                        "type": "string",
-                        "example": "TI-001"
+                    "tool_color_code_id": {
+                        "description": "Tool color code ID",
+                        "type": "integer",
+                        "example": 1
                     },
                     "created_at": {
-                        "description": "Timestamp of creation",
+                        "description": "Tool item created at",
                         "type": "string",
                         "format": "date-time",
-                        "example": "2020-01-01 00:00:00"
+                        "example": "2021-03-01 00:00:00"
                     },
                     "updated_at": {
-                        "description": "Timestamp of last update",
+                        "description": "Tool item updated at",
                         "type": "string",
                         "format": "date-time",
-                        "example": "2020-01-01 00:00:00"
+                        "example": "2021-03-01 00:00:00"
                     },
-                    "tool_product": {
-                        "$ref": "#/components/schemas/ToolProduct"
+                    "tool_product_toolbox": {
+                        "$ref": "#/components/schemas/ToolProductToolbox"
+                    },
+                    "tool_color_code": {
+                        "$ref": "#/components/schemas/ToolColorCode"
                     }
                 },
                 "type": "object"
@@ -1768,9 +1628,6 @@
                         "items": {
                             "$ref": "#/components/schemas/ToolProduct"
                         }
-                    },
-                    "pivot": {
-                        "$ref": "#/components/schemas/ToolProductMaterial"
                     }
                 },
                 "type": "object"
@@ -1819,34 +1676,31 @@
                         "format": "date-time",
                         "example": "2020-01-01 00:00:00"
                     },
-                    "items": {
-                        "description": "Tool product items",
-                        "type": "array",
-                        "items": {
-                            "$ref": "#/components/schemas/ToolItem"
-                        }
-                    },
-                    "materials": {
+                    "material": {
                         "description": "Tool product materials",
                         "type": "array",
                         "items": {
                             "$ref": "#/components/schemas/ToolMaterial"
                         }
                     },
-                    "pivot": {
-                        "$ref": "#/components/schemas/ToolProductMaterial"
+                    "toolboxes": {
+                        "description": "Tool product toolboxes",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ToolProductToolbox"
+                        }
                     }
                 },
                 "type": "object"
             },
-            "ToolProductMaterial": {
+            "ToolProductToolbox": {
                 "required": [
                     "tool_product_id",
-                    "tool_material_id"
+                    "code"
                 ],
                 "properties": {
                     "id": {
-                        "description": "Tool product material ID",
+                        "description": "Tool product toolbox ID",
                         "type": "integer",
                         "example": 1
                     },
@@ -1855,10 +1709,10 @@
                         "type": "integer",
                         "example": 1
                     },
-                    "tool_material_id": {
-                        "description": "Tool material ID",
-                        "type": "integer",
-                        "example": 1
+                    "code": {
+                        "description": "Tool product toolbox code",
+                        "type": "string",
+                        "example": "TP-001"
                     },
                     "created_at": {
                         "description": "Timestamp of creation",
@@ -1871,6 +1725,16 @@
                         "type": "string",
                         "format": "date-time",
                         "example": "2020-01-01 00:00:00"
+                    },
+                    "tool_product": {
+                        "$ref": "#/components/schemas/ToolProduct"
+                    },
+                    "tool_items": {
+                        "description": "Tool items",
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ToolItem"
+                        }
                     }
                 },
                 "type": "object"
@@ -2021,6 +1885,10 @@
         {
             "name": "Project",
             "description": "Everything about tools"
+        },
+        {
+            "name": "ToolColorCode",
+            "description": "Everything about tools color code"
         },
         {
             "name": "ToolItem",
