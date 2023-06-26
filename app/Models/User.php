@@ -183,7 +183,7 @@ class User extends Authenticatable
      * The attributes that should be appended.
      */
     protected $appends = [
-        'role_names',
+        'role_names', 'role_ids',
     ];
 
     /**
@@ -216,5 +216,12 @@ class User extends Authenticatable
     public function getRoleNamesAttribute()
     {
         return $this->getRoleNames();
+    }
+    /**
+     * Get role Ids of the user.
+     */
+    public function getRoleIdsAttribute()
+    {
+        return $this->roles->pluck('id')->toArray();
     }
 }
