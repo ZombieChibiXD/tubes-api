@@ -18,6 +18,7 @@ class ToolMaterialController extends Controller
 {
     /**
      * Display a listing of the resource.
+     *
      * @OA\Get(
      *   tags={"ToolMaterial"},
      *   path="/api/tool/materials",
@@ -29,8 +30,12 @@ class ToolMaterialController extends Controller
      *     @OA\MediaType(
      *       mediaType="application/json",
      *       @OA\Schema(
-     *         type="array",
-     *         @OA\Items(ref="#/components/schemas/ToolMaterial")
+     *         type="object",
+     *         @OA\Property(
+     *           property="materials",
+     *           type="array",
+     *           @OA\Items(ref="#/components/schemas/ToolMaterial")
+     *         )
      *       )
      *     )
      *   )
@@ -38,9 +43,12 @@ class ToolMaterialController extends Controller
      */
     public function index()
     {
-        return response()->json(ToolMaterial::withCount('products')->get()->keyBy('id'));
+        $materials = ToolMaterial::withCount('products')->get()->keyBy('id');
+        return response()->json([
+            'materials' => $materials
+        ]);
     }
-
+    
     /**
      * Store a newly created resource in storage.
      * @OA\Post(
