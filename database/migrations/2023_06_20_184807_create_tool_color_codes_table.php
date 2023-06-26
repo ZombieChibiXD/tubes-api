@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('color')
                     ->unique()
                     ->comment('Tool item color');
+            $table->string('text_color')
+                    ->comment('Tool text item color');
             $table->timestamps();
         });
     }

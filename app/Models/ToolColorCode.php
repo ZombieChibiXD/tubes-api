@@ -29,6 +29,12 @@ use Illuminate\Database\Eloquent\Model;
  *         example="#FF0000"
  *     ),
  *     @OA\Property(
+ *         property="text_color",
+ *         type="string",
+ *         description="Tool text color code",
+ *         example="#FF0000"
+ *     ),
+ *     @OA\Property(
  *         property="created_at",
  *         type="string",
  *         format="date-time",
@@ -50,7 +56,8 @@ class ToolColorCode extends Model
 
     protected $fillable = [
         'code',
-        'color'
+        'color',
+        'text_color',
     ];
 
     /**
