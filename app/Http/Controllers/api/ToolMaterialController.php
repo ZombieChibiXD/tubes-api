@@ -38,7 +38,7 @@ class ToolMaterialController extends Controller
      */
     public function index()
     {
-        return response()->json(ToolMaterial::withCount('products')->get());
+        return response()->json(ToolMaterial::withCount('products')->get()->keyBy('id'));
     }
 
     /**
@@ -118,9 +118,9 @@ class ToolMaterialController extends Controller
      *   )
      * )
      */
-    public function show(ToolMaterial $toolMaterial)
+    public function show(ToolMaterial $material)
     {
-        return response()->json($toolMaterial->load('products'));
+        return response()->json($material->load('products'));
     }
 
     /**
@@ -178,10 +178,10 @@ class ToolMaterialController extends Controller
      *   )
      * )
      */
-    public function update(UpdateToolMaterialRequest $request, ToolMaterial $toolMaterial)
+    public function update(UpdateToolMaterialRequest $request, ToolMaterial $material)
     {
-        $toolMaterial->update($request->validated());
-        return response()->json($toolMaterial);
+        $material->update($request->validated());
+        return response()->json($material);
     }
 
     /**
@@ -216,9 +216,9 @@ class ToolMaterialController extends Controller
      *   )
      * )
      */
-    public function destroy(ToolMaterial $toolMaterial)
+    public function destroy(ToolMaterial $material)
     {
-        $toolMaterial->delete();
-        return response()->json($toolMaterial);
+        $material->delete();
+        return response()->json($material);
     }
 }
