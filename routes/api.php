@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\api\AuthController;
 use App\Http\Controllers\api\ProjectController;
+use App\Http\Controllers\api\RoleController;
 use App\Http\Controllers\api\ToolColorCodeController;
 use App\Http\Controllers\api\ToolMaterialController;
 use App\Http\Controllers\api\ToolProductController;
@@ -26,6 +27,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/auth/logout', [AuthController::class, 'logout']);
     
     Route::apiResource('/users', UserController::class);
+    Route::apiResource('/roles', RoleController::class);
     
     Route::get('/tool/history/{tool}', [ProjectController::class, 'history']);
     Route::get('/project/form', [ProjectController::class, 'form']);
