@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\ToolProduct;
 use App\Http\Requests\StoreToolProductRequest;
 use App\Http\Requests\UpdateToolProductRequest;
+use App\Models\ToolMaterial;
 
 /**
  * @OA\Tag(
@@ -17,6 +18,7 @@ class ToolProductController extends Controller
 {
     /**
      * Display a listing of the resource.
+     *
      * @OA\Get(
      *   tags={"ToolProduct"},
      *   path="/api/tool/products",
@@ -28,8 +30,17 @@ class ToolProductController extends Controller
      *     @OA\MediaType(
      *       mediaType="application/json",
      *       @OA\Schema(
-     *         type="array",
-     *         @OA\Items(ref="#/components/schemas/ToolProduct")
+     *         type="object",
+     *         @OA\Property(
+     *           property="materials",
+     *           type="array",
+     *           @OA\Items(ref="#/components/schemas/ToolMaterial")
+     *         ),
+     *         @OA\Property(
+     *           property="products",
+     *           type="array",
+     *           @OA\Items(ref="#/components/schemas/ToolProduct")
+     *         )
      *       )
      *     )
      *   )
@@ -37,7 +48,13 @@ class ToolProductController extends Controller
      */
     public function index()
     {
-        return response()->json(ToolProduct::withCount('toolboxes')->with('material')->get());
+        $materials = ToolMaterial::withCount('products')->get()->keyBy('id');
+        $products = ToolProduct::withCount('toolboxes')->get()->keyBy('id');
+
+        return response()->json([
+            'materials' => $materials,
+            'products' => $products
+        ]);
     }
 
     /**
@@ -82,7 +99,7 @@ class ToolProductController extends Controller
      */
     public function store(StoreToolProductRequest $request)
     {
-        return response()->json(ToolProduct::create($request->validated()), 201);
+        return response()->json(ToolProduct::create($request->validated())->loadCount('toolboxes'), 201);
     }
 
     /**
@@ -179,7 +196,8 @@ class ToolProductController extends Controller
      */
     public function update(UpdateToolProductRequest $request, ToolProduct $product)
     {
-        return response()->json($product->update($request->validated()));
+        $product->update($request->validated());
+        return response()->json($product->loadCount('toolboxes'));
     }
 
     /**

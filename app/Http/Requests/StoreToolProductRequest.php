@@ -62,6 +62,7 @@ class StoreToolProductRequest extends FormRequest
         return [
             'tool_material_id' => 'required|integer|exists:tool_materials,id',
             'code' => 'required|string|max:255|unique:tool_products,code',
+            'prefix' => 'required|string|max:255|unique:tool_products,prefix',
             'name' => 'string|max:255',
             'min_cutting_speed' => 'required|integer|min:0',
             'max_cutting_speed' => 'required|integer|min:0|gt:min_cutting_speed'

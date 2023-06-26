@@ -87,6 +87,7 @@ class ToolProduct extends Model
         'tool_material_id',
         'code',
         'name',
+        'prefix',
         'min_cutting_speed',
         'max_cutting_speed',
     ];

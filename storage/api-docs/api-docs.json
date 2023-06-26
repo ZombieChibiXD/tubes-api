@@ -488,10 +488,15 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/ToolMaterial"
-                                    }
+                                    "properties": {
+                                        "materials": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/ToolMaterial"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
                                 }
                             }
                         }
@@ -743,10 +748,21 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "array",
-                                    "items": {
-                                        "$ref": "#/components/schemas/ToolProduct"
-                                    }
+                                    "properties": {
+                                        "materials": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/ToolMaterial"
+                                            }
+                                        },
+                                        "products": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "#/components/schemas/ToolProduct"
+                                            }
+                                        }
+                                    },
+                                    "type": "object"
                                 }
                             }
                         }
