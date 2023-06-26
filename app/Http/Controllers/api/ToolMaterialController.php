@@ -91,7 +91,7 @@ class ToolMaterialController extends Controller
      */
     public function store(StoreToolMaterialRequest $request)
     {
-        return response()->json(ToolMaterial::create($request->validated()), 201);
+        return response()->json(ToolMaterial::create($request->validated())->loadCount('products'), 201);
     }
 
     /**
@@ -189,7 +189,7 @@ class ToolMaterialController extends Controller
     public function update(UpdateToolMaterialRequest $request, ToolMaterial $material)
     {
         $material->update($request->validated());
-        return response()->json($material);
+        return response()->json($material->loadCount('products'));
     }
 
     /**
