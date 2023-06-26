@@ -117,9 +117,9 @@ class ToolProductController extends Controller
      *   )
      * )
      */
-    public function show(ToolProduct $toolProduct)
+    public function show(ToolProduct $product)
     {
-        return response()->json($toolProduct);
+        return response()->json($product);
     }
 
     /**
@@ -177,9 +177,9 @@ class ToolProductController extends Controller
      *   )
      * )
      */
-    public function update(UpdateToolProductRequest $request, ToolProduct $toolProduct)
+    public function update(UpdateToolProductRequest $request, ToolProduct $product)
     {
-        return response()->json($toolProduct->update($request->validated()));
+        return response()->json($product->update($request->validated()));
     }
 
     /**
@@ -214,9 +214,9 @@ class ToolProductController extends Controller
      *   )
      * )
      */
-    public function destroy(ToolProduct $toolProduct)
+    public function destroy(ToolProduct $product)
     {
-        $toolProduct->delete();
-        return response()->json($toolProduct);
+        $product->delete();
+        return response()->json($product);
     }
 }
