@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Models\ToolProduct;
 use App\Http\Requests\StoreToolProductRequest;
 use App\Http\Requests\UpdateToolProductRequest;
+use App\Models\ToolItem;
 use App\Models\ToolMaterial;
+use App\Models\ToolProductToolbox;
 
 /**
  * @OA\Tag(
@@ -136,6 +138,23 @@ class ToolProductController extends Controller
      */
     public function show(ToolProduct $product)
     {
+        $product->toolboxes->each->loadCount('toolItems');
+        return response()->json($product);
+    }
+    
+    public function addToolbox(ToolProduct $product)
+    {
+        $toolbox = ToolProductToolbox::create([
+            'tool_product_id' => $product->id
+        ]);
+        for ($i=1; $i <= 10; $i++) {
+            ToolItem::create([
+                    'tool_product_toolbox_id' => $toolbox->id,
+                    'tool_color_code_id' => $i,
+            ]);
+        }
+
+        $product->toolboxes->each->loadCount('toolItems');
         return response()->json($product);
     }
 

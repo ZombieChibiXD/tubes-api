@@ -77,13 +77,13 @@ class ToolProductToolbox extends Model
             /**
              * @var ToolItemSequence $sequence
              */
-            $sequence = ToolProductToolbox::firstOrCreate([
+            $sequence = ToolProductToolboxSequence::firstOrCreate([
                 'tool_product_id' => $model->tool_product_id
             ]);
-            if (!$model->item_code) {
-                $model->item_code = $sequence->getNextValue();
-            } elseif ($sequence->next_value < $model->item_code) {
-                $sequence->next_value = $model->item_code + 1;
+            if (!$model->code) {
+                $model->code = $sequence->getNextValue();
+            } elseif ($sequence->next_value < $model->code) {
+                $sequence->next_value = $model->code + 1;
                 $sequence->save();
             }
         });

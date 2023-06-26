@@ -34,6 +34,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::apiResource('/project', ProjectController::class);
     Route::apiResource('/tool/materials', ToolMaterialController::class);
     Route::apiResource('/tool/products', ToolProductController::class);
+    Route::post('/tool/products/{product}/toolbox', [ToolProductController::class, 'addToolbox']);
     Route::apiResource('/tool/color-codes', ToolColorCodeController::class);
     
 });
