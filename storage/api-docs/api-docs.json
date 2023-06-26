@@ -109,23 +109,24 @@
                 ]
             }
         },
-        "/api/project": {
+        "/api/project/form": {
             "get": {
                 "tags": [
                     "Project"
                 ],
                 "summary": "List tools and ongoing project",
-                "description": "Display a listing of the resource.",
-                "operationId": "1a149f32d40ca0b3cb5f2b00b78d901b",
+                "description": "Display a listing of the form data.",
+                "operationId": "93fa6ca92efef6275069563b6283fd4d",
                 "parameters": [
                     {
                         "name": "filter",
                         "in": "query",
-                        "description": "Filter tools by status (NEW [DEFAULT], ONGOING, HISTORY)",
+                        "description": "Filter tools by status (NEW, ONGOING, HISTORY)",
                         "required": false,
                         "schema": {
                             "type": "string"
-                        }
+                        },
+                        "example": "NEW"
                     }
                 ],
                 "responses": {
@@ -189,7 +190,9 @@
                         "bearerAuth": []
                     }
                 ]
-            },
+            }
+        },
+        "/api/project": {
             "post": {
                 "tags": [
                     "Project"
@@ -258,7 +261,7 @@
                 ],
                 "summary": "Create work on an ongoing project",
                 "description": "Store a newly created work on an ongoing project in storage.",
-                "operationId": "dbc4f1745f6a5eb6cb6bddf442282030",
+                "operationId": "30d00821ba5efa269cefeb07d7097f67",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -1417,6 +1420,30 @@
                         "type": "string",
                         "format": "date-time",
                         "example": "2020-01-01 00:00:00"
+                    },
+                    "total_machining_time": {
+                        "description": "Total machining time (minute)",
+                        "type": "integer",
+                        "example": 100
+                    },
+                    "remaining_tool_life": {
+                        "description": "Remaining tool life (minute)",
+                        "type": "integer",
+                        "example": 100
+                    },
+                    "tool_item": {
+                        "$ref": "#/components/schemas/ToolItem"
+                    },
+                    "machining_project_works": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/MachiningProjectWork"
+                        }
+                    },
+                    "machining_project_works_count": {
+                        "description": "Machining project works count",
+                        "type": "integer",
+                        "example": 1
                     }
                 },
                 "type": "object"
@@ -1541,6 +1568,11 @@
                     },
                     "color": {
                         "description": "Tool color code color",
+                        "type": "string",
+                        "example": "#FF0000"
+                    },
+                    "text_color": {
+                        "description": "Tool text color code",
                         "type": "string",
                         "example": "#FF0000"
                     },

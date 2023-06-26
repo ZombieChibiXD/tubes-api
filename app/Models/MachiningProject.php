@@ -80,6 +80,35 @@ use Illuminate\Database\Eloquent\Model;
  *         description="Timestamp of last update",
  *         example="2020-01-01 00:00:00"
  *     ),
+ *     @OA\Property(
+ *         property="total_machining_time",
+ *         type="integer",
+ *         description="Total machining time (minute)",
+ *         example=100
+ *     ),
+ *     @OA\Property(
+ *         property="remaining_tool_life",
+ *         type="integer",
+ *         description="Remaining tool life (minute)",
+ *         example=100
+ *     ),
+ *     @OA\Property(
+ *         property="tool_item",
+ *         ref="#/components/schemas/ToolItem"
+ *     ),
+ *     @OA\Property(
+ *         property="machining_project_works",
+ *         type="array",
+ *         @OA\Items(
+ *             ref="#/components/schemas/MachiningProjectWork"
+ *         )
+ *     ),
+ *     @OA\Property(
+ *         property="machining_project_works_count",
+ *         type="integer",
+ *         description="Machining project works count",
+ *         example=1
+ *     )
  * )
  */
 class MachiningProject extends Model
@@ -104,12 +133,12 @@ class MachiningProject extends Model
         'early_tool_life',
         'is_active',
     ];
-    
+
     /**
      * The attributes that should be appended.
      */
-    protected $appends = ['remaining_time'];
-    
+    protected $appends = ['total_project_time', 'remaining_tool_life',];
+
     public function toolItem()
     {
         return $this->belongsTo(ToolItem::class);
@@ -120,15 +149,15 @@ class MachiningProject extends Model
         return $this->hasMany(MachiningProjectWork::class);
     }
 
-    // Remaining time is calculated by subtracting the machining time of each
-    // work from the early tool life of the machining project.
-    public function getRemainingTimeAttribute()
+    public function getTotalProjectTimeAttribute()
     {
-        $remainingTime = $this->early_tool_life;
-        foreach ($this->machiningProjectWorks as $work) {
-            $remainingTime -= $work->machining_time;
-        }
-        return $remainingTime;
+        return $this->machiningProjectWorks->sum('total_machining_time');
     }
 
+    // Remaining time is calculated by subtracting the machining time of each
+    // work from the early tool life of the machining project.
+    public function getRemainingToolLifeAttribute()
+    {
+        return $this->early_tool_life - $this->total_project_time;
+    }
 }

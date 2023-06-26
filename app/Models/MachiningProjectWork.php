@@ -83,6 +83,11 @@ class MachiningProjectWork extends Model
 {
     use HasFactory, HasTimestamps;
 
+    /**
+     * Toucheable attributes
+     */
+    protected $touches = ['machiningProject'];
+    protected $appends = ['total_machining_time'];
     protected $fillable = [
         'machining_project_id',
         'product_id',
@@ -96,5 +101,9 @@ class MachiningProjectWork extends Model
     public function machiningProject()
     {
         return $this->belongsTo(MachiningProject::class);
+    }
+    public function getTotalMachiningTimeAttribute()
+    {
+        return $this->machining_time * $this->product_quantity;
     }
 }

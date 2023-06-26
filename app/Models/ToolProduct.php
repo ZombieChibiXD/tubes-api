@@ -97,7 +97,7 @@ class ToolProduct extends Model
      */
     public function material()
     {
-        return $this->belongsTo(ToolMaterial::class);
+        return $this->belongsTo(ToolMaterial::class, 'tool_material_id');
     }
 
     /**

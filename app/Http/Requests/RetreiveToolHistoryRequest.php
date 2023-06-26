@@ -48,8 +48,6 @@ class RetreiveToolHistoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'tool_material_id' => 'required|integer|exists:tool_materials,id',
-            'tool_product_id' => 'required|integer|exists:tool_products,id',
             'tool_item_id' => 'required|integer|exists:tool_items,id'
         ];
     }

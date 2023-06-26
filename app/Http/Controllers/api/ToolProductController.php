@@ -37,7 +37,7 @@ class ToolProductController extends Controller
      */
     public function index()
     {
-        return response()->json(ToolProduct::withCount('toolboxes')->get());
+        return response()->json(ToolProduct::withCount('toolboxes')->with('material')->get());
     }
 
     /**
@@ -119,7 +119,7 @@ class ToolProductController extends Controller
      */
     public function show(ToolProduct $toolProduct)
     {
-        return response()->json($toolProduct->load('materials'));
+        return response()->json($toolProduct);
     }
 
     /**

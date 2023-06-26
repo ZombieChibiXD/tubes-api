@@ -79,6 +79,14 @@ class ToolItem extends Model
     }
 
     /**
+     * Get the tool color code that owns the tool item.
+     */
+    public function toolColorCode()
+    {
+        return $this->belongsTo(ToolColorCode::class);
+    }
+
+    /**
      * Scope a query to only include is_active type of a given type within machinig projects.
      */
     public function scopeProject(Builder $query, $filter = null)

@@ -27,12 +27,11 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     
     Route::apiResource('/users', UserController::class);
     
+    Route::get('/tool/history/{tool}', [ProjectController::class, 'history']);
+    Route::get('/project/form', [ProjectController::class, 'form']);
+    Route::apiResource('/project', ProjectController::class);
+    Route::apiResource('/tool/materials', ToolMaterialController::class);
+    Route::apiResource('/tool/products', ToolProductController::class);
+    Route::apiResource('/tool/color-codes', ToolColorCodeController::class);
     
 });
-Route::get('/project', [ProjectController::class, 'index']);
-Route::post('/project', [ProjectController::class, 'store']);
-Route::post('/project/ongoing', [ProjectController::class, 'ongoing']);
-Route::post('/project/tool/history', [ProjectController::class, 'history']);
-Route::apiResource('/tool/materials', ToolMaterialController::class);
-Route::apiResource('/tool/products', ToolProductController::class);
-Route::apiResource('/tool/color-codes', ToolColorCodeController::class);

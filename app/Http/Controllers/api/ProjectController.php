@@ -9,6 +9,7 @@ use App\Http\Requests\StoreMachiningProjectWorkRequest;
 use App\Models\MachiningProject;
 use App\Models\MachiningProjectWork;
 use App\Models\ToolColorCode;
+use App\Models\ToolItem;
 use App\Models\ToolMaterial;
 use App\Models\ToolProduct;
 use Illuminate\Contracts\Cache\Store;
@@ -24,10 +25,10 @@ class ProjectController extends Controller
 {
 
     /**
-     * Display a listing of the resource.
+     * Display a listing of the form data.
      * @OA\Get(
      *   tags={"Project"},
-     *   path="/api/project",
+     *   path="/api/project/form",
      *   summary="List tools and ongoing project",
      *   security={{"bearerAuth":{}}},
      *   @OA\Parameter(
@@ -89,7 +90,7 @@ class ProjectController extends Controller
      *   )
      * )
      */
-    public function index(Request $request)
+    public function form(Request $request)
     {
         $filter = $request->query('filter', 'NEW');
         $filterItem = function ($q) use ($filter) {
@@ -105,7 +106,7 @@ class ProjectController extends Controller
 
 
         $toolMaterials = $builder->get();
-        $colors = ToolColorCode::all();
+        $colors = ToolColorCode::all()->keyBy('id');
         $machiningProjects = MachiningProject::where('is_active', true)->get();
         return response()->json([
             'materials' => $toolMaterials,
@@ -193,6 +194,7 @@ class ProjectController extends Controller
 
         $project = MachiningProject::create($fields);
         $project->is_active = true;
+        $project->load('toolItem.toolProductToolbox.toolProduct.material');
         return response()->json($project, 201);
     }
 
@@ -253,13 +255,9 @@ class ProjectController extends Controller
      *   )
      * )
      */
-    public function ongoing(StoreMachiningProjectWorkRequest $request)
+    public function update(MachiningProject $project, StoreMachiningProjectWorkRequest $request)
     {
         $fields = $request->validated();
-        /**
-         * @var MachiningProject $project
-         */
-        $project = MachiningProject::find($fields['machining_project_id']);
         if (!$project) {
             return response()->json([
                 'message' => 'Project not found.'
@@ -269,9 +267,9 @@ class ProjectController extends Controller
         $addedTime = $fields['machining_time'] * $fields['product_quantity'];
         $errors = [];
         $message = 'Unknown error';
-        if ($project->remaining_time < $addedTime) {
+        if ($project->remaining_tool_life < $addedTime) {
             $message = $remainMessage = 'Machining time exceeds remaining tool life by '
-                . ($addedTime - $project->remaining_time) . ' minutes.';
+                . ($addedTime - $project->remaining_tool_life) . ' minutes.';
             $failed = true;
             $errors['machining_time'] = [$remainMessage];
             $errors['product_quantity'] = [$remainMessage];
@@ -296,11 +294,11 @@ class ProjectController extends Controller
         $machiningWork = MachiningProjectWork::create($fields);
         $project = $machiningWork->machiningProject;
 
-        if ($project->remaining_time == 0) {
+        if ($project->remaining_tool_life == 0) {
             $project->is_active = false;
             $project->save();
         }
-
+        $project->load('machiningProjectWorks');
         return response()->json($project, 201);
     }
 
@@ -363,15 +361,11 @@ class ProjectController extends Controller
      *   )
      * )
      */
-    public function history(RetreiveToolHistoryRequest $request)
+    public function history(ToolItem $tool)
     {
-        $fields = $request->validated();
-        // Get all Machining Projects with the specified fields
-        $projects = MachiningProject::where($fields)
-            ->with('toolProduct')
-            ->with('toolItem')
-            ->with('toolMaterial')
-            ->get();
-        return response()->json($projects, 200);
+        $tool->load('toolColorCode')
+            ->load('toolProductToolbox.toolProduct.material')
+            ->load('machiningProjects.machiningProjectWorks');
+        return response()->json($tool, 200);
     }
 }
