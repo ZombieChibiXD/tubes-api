@@ -17,14 +17,14 @@ class ToolProductToolboxSequenceSeeder extends Seeder
             [
                 'id' => 1,
                 'tool_product_id' => 1,
-                'next_value' => 3,
+                'next_value' => 2,
                 'created_at' => DatabaseSeeder::SEED_DATE_DEFAULT,
                 'updated_at' => DatabaseSeeder::SEED_DATE_DEFAULT,
             ],
             [
                 'id' => 2,
                 'tool_product_id' => 2,
-                'next_value' => 3,
+                'next_value' => 2,
                 'created_at' => DatabaseSeeder::SEED_DATE_DEFAULT,
                 'updated_at' => DatabaseSeeder::SEED_DATE_DEFAULT,
             ]

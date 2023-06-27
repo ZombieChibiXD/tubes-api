@@ -14,7 +14,7 @@ class ToolItemSeeder extends Seeder
     public function run(): void
     {
         $items = [];
-        for ($t=1; $t <= 4; $t++)  {
+        for ($t=1; $t <= 2; $t++)  {
             for ($i=1; $i <= 10; $i++) {
                 $items[] = [
                     'tool_product_toolbox_id' => $t,

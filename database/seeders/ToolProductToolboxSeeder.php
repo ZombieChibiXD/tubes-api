@@ -17,7 +17,7 @@ class ToolProductToolboxSeeder extends Seeder
         $toolToolbox = [];
 
         for ($p = 1; $p <= 2; $p++) {
-            for ($t = 1; $t <= 2; $t++) {
+            for ($t = 1; $t <= 1; $t++) {
                 $toolToolbox[] = [
                     'tool_product_id' => $p,
                     'code' => $t,
