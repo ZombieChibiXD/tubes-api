@@ -17,7 +17,7 @@ class ToolProductSeeder extends Seeder
         $products = [
             [
                 'id' => 1,
-                'code' => 'WNGM 080408 NM LT 1000',
+                'code' => 'WNMG 080408 NM LT 1000',
                 'prefix' => 'LRW00',
                 'min_cutting_speed' => 180,
                 'max_cutting_speed' => 245,
@@ -27,7 +27,7 @@ class ToolProductSeeder extends Seeder
             ],
             [
                 'id' => 2,
-                'code' => 'WNGM 080408 NM LT 1025',
+                'code' => 'WNMG 080408 NM LT 1025',
                 'prefix' => 'LRW25',
                 'min_cutting_speed' => 165,
                 'max_cutting_speed' => 280,
